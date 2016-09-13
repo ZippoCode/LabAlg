@@ -1,0 +1,10 @@
+progetto.builder
+progetto.command
+progetto.gui
+progetto.iterator
+progetto.main
+progetto.mediator
+progetto.state
+progetto.strategy
+progetto.template_method
+progetto.utility
