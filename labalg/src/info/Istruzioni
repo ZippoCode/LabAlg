@@ -1,0 +1,9 @@
+ISTRUZIONI
+INFORMAZIONI 
+Il KenKen è un gioco di logica, ispirato al Sudoku e creato nel 2004 dal professore giapponese Tetsuya Miyamoto, insegnante alla Miyamoto Math Classroom di Tokyo. Fu pubblicato per la prima volta nel 2008 dal giornale londinese The Times, che aveva già reso famoso il Sudoku
+IL GIOCO 
+Il gioco consiste in una griglia di dimensioni variabili (i più comuni vanno dalle griglie 3x3 fino alle più difficili 9x9), nelle quali bisogna disporre le cifre da 1 a n senza che ci siano ripetizioni né nelle righe né nelle colonne (come per il Sudoku). La griglia inizialmente è totalmente vuota, e divisa in blocchi di diverse forme da linee più spesse; in ogni blocco viene riportato un numero, seguito da un operatore aritmetico (+, -, x o ÷), che indica l'operazione da effettuare tra le varie cifre del blocco.
+La griglia va completata in modo che, effettuando l'operazione riportata in ciascun blocco tra le sue cifre, si ottenga esattamente il risultato richiesto (sempre un numero intero positivo). A differenza del Killer Sudoku, le cifre si possono ripetere all'interno dei blocchi, a condizione però che non si trovino sulla stessa riga o colonna.
+VARIANTI
+Una versione più difficile di questo gioco si ottiene omettendo dai blocchi gli operatori, e lasciando così più possibili combinazioni per ogni blocco; allo stesso modo si possono mettere nei blocchi due o più operatori, invece di uno solo, da applicare in successione ma in ordine sparso.
+Le dimensioni dei KenKen sono variabili, ma in generale è totalmente inutile un KenKen 2x2, in quanto vi sono solo 2 possibili soluzioni; allo stesso modo, un KenKen di dimensioni superiori a 9x9 presenta complicazioni dovute alla necessità di operare con numeri molto grandi, e di dover mettere nello schema numeri con più di una cifra, creando così confusione.
