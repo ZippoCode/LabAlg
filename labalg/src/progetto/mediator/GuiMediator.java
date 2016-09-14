@@ -52,7 +52,13 @@ public class GuiMediator extends FSM implements Mediator {
 	private JCella cella;
 	private JGrigliaPanel jGrigliaPanel = null;
 	private HashMap<String, JCella> mappaCelle = new HashMap<>();
-	private String testo = "CLICCARE SU GIOCA E SELEZIONARE LA DIMENSIONE DELLA GRIGLIA,\nPER SCRIVERE UN NUMERO E' SUFFICIENTIE CLICCARE SULLA POSIZIONE\nE DIGITARE DA TASTIERA IL NUMERO SCELTO.\nI BOTTONI\nRISOLVI : Visualizza la soluzione\nRESET : Elimina i numeri scritti\nAVANTI e INDIETRO : Permettono di navigare sui numeri scritti\nCHECK : Informa se i numeri scritti sono corretti";
+	private String testo = "CLICCARE SU GIOCA E SELEZIONARE LA DIMENSIONE DELLA GRIGLIA,"
+			+ "\nPER SCRIVERE UN NUMERO E' SUFFICIENTIE CLICCARE SULLA POSIZIONE\n"
+			+ "E DIGITARE DA TASTIERA IL NUMERO SCELTO.\nI BOTTONI\nRISOLVI : Visualizza la soluzione\n"
+			+ "RESET : Elimina i numeri scritti\n>> e << : Permettono di navigare sui numeri scritti\n"
+			+ "CHECK : Informa se i numeri scritti sono corretti\n"
+			+ "SAVE e RESTORE : Permetto di salvare e ripristinare lo stato\n"
+			+ "AIUTO : Visualizza un numero in una posizione casuale ";
 
 	public GuiMediator() {
 		transition(START);

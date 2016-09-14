@@ -1,13 +1,9 @@
-package progetto.builder;
+package progetto.utility;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 
 import progetto.strategy.Blocco;
-import progetto.utility.Cella;
-import progetto.utility.IPLinkedList;
-import progetto.utility.InsiemePosizioni;
-import progetto.utility.Posizione;
 
 /**
  * @author Salvatore

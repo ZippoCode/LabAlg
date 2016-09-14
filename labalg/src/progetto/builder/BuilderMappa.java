@@ -1,6 +1,7 @@
 package progetto.builder;
 
 import progetto.strategy.Blocco;
+import progetto.utility.Blocchi;
 import progetto.utility.Griglia;
 import progetto.utility.IPLinkedList;
 import progetto.utility.InsiemePosizioni;

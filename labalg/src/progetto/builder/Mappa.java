@@ -3,6 +3,7 @@ package progetto.builder;
 import java.util.LinkedList;
 
 import progetto.strategy.Blocco;
+import progetto.utility.Blocchi;
 import progetto.utility.Griglia;
 import progetto.utility.Posizione;
 
