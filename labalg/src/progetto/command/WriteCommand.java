@@ -1,5 +1,6 @@
 package progetto.command;
 
+import progetto.builder.Mappa;
 import progetto.gui.JCella;
 import progetto.gui.JGrigliaPanel;
 
@@ -8,18 +9,20 @@ import progetto.gui.JGrigliaPanel;
  * precedentemente per facilitare i comandi Avanti e Indietro
  * 
  * @author Salvatore
- * @version 1.0.2
+ * @version 1.2
  */
 
 public class WriteCommand extends AbstractCommand {
 
 	private JCella testo = null;
 	private JGrigliaPanel jGrigliaPanel = null;
+	private Mappa mappa = null;
 	private String oldValue = " ";
 	private String newValue = " ";
 
-	public WriteCommand(JCella testo, String value, JGrigliaPanel jgp) {
+	public WriteCommand(JCella testo, String value, Mappa mappa, JGrigliaPanel jgp) {
 		jGrigliaPanel = jgp;
+		this.mappa = mappa;
 		oldValue = testo.getText();
 		if (oldValue.equals(value))
 			return;
@@ -31,7 +34,7 @@ public class WriteCommand extends AbstractCommand {
 	@Override
 	public boolean doIt() {
 		testo.setText(newValue);
-		jGrigliaPanel.scriviValoreMappa(Integer.parseInt(newValue), testo.getPosizione());
+		mappa.write(Integer.parseInt(newValue), testo.getPosizione());
 		return true;
 	}
 
@@ -40,8 +43,10 @@ public class WriteCommand extends AbstractCommand {
 		testo.setText(oldValue);
 		if (oldValue.equals("") || oldValue.equals(" ")) {
 			jGrigliaPanel.eliminaValoreMappa(testo.getPosizione());
-		} else
-			jGrigliaPanel.scriviValoreMappa(Integer.parseInt(oldValue), testo.getPosizione());
+			mappa.delete(0, testo.getPosizione());
+		} else {
+			mappa.write(Integer.parseInt(newValue), testo.getPosizione());
+		}
 		return true;
 	}
 }

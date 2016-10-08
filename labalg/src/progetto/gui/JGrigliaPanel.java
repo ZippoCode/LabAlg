@@ -4,8 +4,9 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -13,30 +14,23 @@ import javax.swing.JPanel;
 import progetto.builder.Mappa;
 import progetto.mediator.Mediator;
 import progetto.strategy.Blocco;
-import progetto.template_method.Kenken;
 import progetto.utility.Cella;
 import progetto.utility.Counter;
-import progetto.utility.IPLinkedList;
 import progetto.utility.InsiemePosizioni;
 import progetto.utility.Posizione;
 
 /**
  * 
  * @author Salvatore
- *
+ * @version 2.0.0
  */
 
-public class JGrigliaPanel extends JPanel implements Runnable {
+public class JGrigliaPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private GridBagLayout gbl = null;
 	private GridBagConstraints gbc = null;
-	private Kenken kk = null;
-	private LinkedList<JCella> listaCelle = null;
-	private Mappa soluzione = null;
-	private Mappa mappa = null;
-	private Mappa ripristino = null;
+	private HashMap<Posizione, JCella> hashMapJCella = null;
 	private Mediator mediator = null;
-	private InsiemePosizioni insieme = null;
 
 	public JGrigliaPanel(Mediator mediator) {
 		this.mediator = mediator;
@@ -44,31 +38,27 @@ public class JGrigliaPanel extends JPanel implements Runnable {
 		gbc = new GridBagConstraints();
 		setLayout(gbl);
 		setBackground(Color.decode("#FF7F50"));
-		listaCelle = new LinkedList<JCella>();
 	}
 
-	public void creaJGrigliaPanel(Mappa mappa) {
+	public void creaJGrigliaPanel(LinkedList<Blocco> listaBlocchi, int dimensione) {
 		removeAll();
 		revalidate();
 		repaint();
-		this.mappa = mappa;
-		insieme = new IPLinkedList();
-		kk = new Kenken(mappa);
 		boolean flag = false;
-		listaCelle = new LinkedList<JCella>();
-		for (Blocco blocco : mappa.getInsiemeBlocchi()) {
+		hashMapJCella = new HashMap<Posizione, JCella>();
+		for (Blocco blocco : listaBlocchi) {
 			String linea = blocco.getOperatore() + " " + String.valueOf(blocco.getRisultato());
 			flag = false;
 			LinkedList<Cella> lista = blocco.getListaCelle();
 			for (int i = 0; i < lista.size(); i++) {
-				JCella jc = new JCella(lista.get(i), mappa.getDimensioneMappa());
+				JCella jc = new JCella(lista.get(i), dimensione);
 				jc.setName(jc.getPosizione().toString());
 				mediator.manageEvent(new ActionEvent(jc, Counter.generateID(), null));
 				if (!flag) {
 					flag = true;
 					jc.assegnaOR(linea);
 				}
-				listaCelle.add(jc);
+				hashMapJCella.put(jc.getPosizione(), jc);
 				jc.bordi(lista);
 				gbc.gridy = jc.getPosizione().getRiga();
 				gbc.gridx = jc.getPosizione().getColonna();
@@ -78,14 +68,14 @@ public class JGrigliaPanel extends JPanel implements Runnable {
 		}
 	}
 
-	public LinkedList<JCella> getListaJCelle() {
-		return listaCelle;
+	public Collection<JCella> getListaJCelle() {
+		return hashMapJCella.values();
 	}
 
-	public boolean possoScriverlo(String val) {
+	public boolean possoScriverlo(String val, int dimensione) {
 		if (val.equals("1") || val.equals("2") || val.equals("3") || val.equals("4") || val.equals("5")
 				|| val.equals("6") || val.equals("7") || val.equals("8") || val.equals("9")) {
-			return Integer.parseInt(val) <= mappa.getDimensioneMappa();
+			return Integer.parseInt(val) <= dimensione;
 		}
 		return false;
 	}
@@ -94,98 +84,53 @@ public class JGrigliaPanel extends JPanel implements Runnable {
 		setBorder(BorderFactory.createTitledBorder(file));
 	}
 
-	public void scriviValoreMappa(int numero, Posizione posizione) {
-		mappa.write(numero, posizione);
-	}
-
 	public void eliminaValoreMappa(Posizione posizione) {
-		for (JCella jc : listaCelle) {
-			if (jc.getPosizione().equals(posizione))
-				jc.setBackground(Color.WHITE);
-		}
-		mappa.delete(0, posizione);
+		JCella jc = hashMapJCella.get(posizione);
+		if (jc.getPosizione().equals(posizione))
+			jc.setBackground(Color.WHITE);
 	}
 
-	public void visualizzaSoluzione() {
-		for (JCella jc : listaCelle) {
+	public void visualizzaSoluzione(Mappa soluzione) {
+		for (JCella jc : getListaJCelle()) {
 			jc.setBackground(Color.WHITE);
 			jc.setText(String.valueOf(soluzione.getValore(jc.getPosizione())));
 		}
 	}
 
 	public void restart() {
-		for (JCella jc : listaCelle) {
-			eliminaValoreMappa(jc.getPosizione());
+		for (JCella jc : getListaJCelle()) {
+			jc.setBackground(Color.WHITE);
 			jc.setText(" ");
 		}
 	}
 
-	public Posizione posRandom() {
-		Random random = new Random();
-		Posizione posizione = null;
-		int x = -1;
-		int y = -1;
-		int dimMappa = mappa.getDimensioneMappa();
-		do {
-			x = random.nextInt(dimMappa);
-			y = random.nextInt(dimMappa);
-			posizione = new Posizione(x, y);
-		} while (insieme.contiene(posizione));
-		insieme.addLast(posizione);
-		return posizione;
-	}
-
-	public boolean soluzioneCompleta() {
-		return soluzione.equals(mappa);
-	}
-
-	public void checkSoluzione() {
-		if (soluzione != null) {
-			for (JCella jc : listaCelle) {
-				if (mappa.getValore(jc.getPosizione()).equals(soluzione.getValore(jc.getPosizione()))) {
-					jc.setBackground(Color.decode("#4CAF50"));
-				} else if (mappa.getValore(jc.getPosizione()) != 0) {
-					jc.setBackground(Color.decode("#F44336"));
-				} else {
-					jc.setBackground(Color.WHITE);
-				}
-			}
+	public void checkSoluzione(InsiemePosizioni corrette, InsiemePosizioni scorrette) {
+		for (JCella jc : getListaJCelle()) {
+			jc.setBackground(Color.WHITE);
+		}
+		for (Posizione p : corrette) {
+			JCella jc = hashMapJCella.get(p);
+			jc.setBackground(Color.decode("#4CAF50"));
+		}
+		for (Posizione p : scorrette) {
+			JCella jc = hashMapJCella.get(p);
+			jc.setBackground(Color.decode("#F44336"));
 		}
 	}
 
-	public void salvaStato() {
-		ripristino = new Mappa(mappa);
-	}
-
-	public void ripristinaStato() {
+	public void ripristinaStato(Mappa mappa) {
 		restart();
-		for (JCella jc : listaCelle) {
-			if (ripristino.getValore(jc.getPosizione()) != 0) {
-				scriviValoreMappa(ripristino.getValore(jc.getPosizione()), jc.getPosizione());
-				jc.setText(String.valueOf((ripristino.getValore(jc.getPosizione()))));
-			}
+		for (JCella jc : getListaJCelle()) {
+			if (mappa.getValore(jc.getPosizione()) != 0)
+				jc.setText(String.valueOf((mappa.getValore(jc.getPosizione()))));
 		}
 	}
 
-	public void aiutalo(Posizione pos) {
-		for (JCella jc : listaCelle) {
-			if (jc.getPosizione().equals(pos)) {
-				scriviValoreMappa(soluzione.getValore(pos), pos);
-				jc.setBackground(Color.WHITE);
-				jc.setText(String.valueOf((soluzione.getValore(pos))));
-				jc.setEnabled(false);
-			}
-		}
-	}
-
-	public boolean vuota() {
-		return mappa.isEmpty();
-	}
-
-	@Override
-	public void run() {
-		kk.risolvi();
-		soluzione = mappa.getSoluzione();
+	public void aiutalo(Posizione pos, int valore) {
+		JCella jc = hashMapJCella.get(pos);
+		jc.setBackground(Color.WHITE);
+		jc.setText(String.valueOf(valore));
+		jc.setEnabled(false);
 	}
 
 }

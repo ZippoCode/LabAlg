@@ -1,16 +1,19 @@
 package progetto.builder;
 
 import java.util.LinkedList;
+import java.util.Random;
 
 import progetto.strategy.Blocco;
 import progetto.utility.Blocchi;
 import progetto.utility.Griglia;
+import progetto.utility.IPLinkedList;
+import progetto.utility.InsiemePosizioni;
 import progetto.utility.Posizione;
 
 /**
  * 
  * @author Salvatore
- * @version 1.0.1
+ * @version 1.0.2
  * 
  *          PRODUCT Questa classe gestisce la griglia e l'insieme dei blocchi.
  */
@@ -19,7 +22,10 @@ public class Mappa implements MappaIF {
 
 	private Griglia griglia = null;
 	private Mappa soluzione = null;
+	private Mappa ripristino = null;
 	private Blocchi insieme = null;
+	private InsiemePosizioni posizioniRandom = null;
+	private int dimensione = -1;
 	private int numeriScritti = 0;
 
 	/**
@@ -31,8 +37,10 @@ public class Mappa implements MappaIF {
 	 * @param insieme
 	 */
 	public Mappa(int dimensione, Blocchi insieme) {
-		this.griglia = new Griglia(dimensione);
+		griglia = new Griglia(dimensione);
 		this.insieme = insieme;
+		this.dimensione = dimensione;
+		posizioniRandom = new IPLinkedList();
 	}
 
 	/**
@@ -43,6 +51,7 @@ public class Mappa implements MappaIF {
 	public Mappa(Mappa mappa) {
 		griglia = new Griglia(mappa.griglia);
 		insieme = new Blocchi(mappa.insieme);
+		this.dimensione = mappa.dimensione;
 	}
 
 	@Override
@@ -73,6 +82,7 @@ public class Mappa implements MappaIF {
 	public void write(Integer scelta, Posizione puntoDiScelta) {
 		griglia.scriviNumero(puntoDiScelta, scelta);
 		insieme.scriviBlocco(puntoDiScelta, scelta);
+		//posizioniRandom.addLast(puntoDiScelta);
 		numeriScritti++;
 	}
 
@@ -80,7 +90,51 @@ public class Mappa implements MappaIF {
 	public void delete(Integer scelta, Posizione puntoDiScelta) {
 		griglia.cancellaNumero(puntoDiScelta);
 		insieme.cancellaBlocco(puntoDiScelta);
+		//posizioniRandom.remove(puntoDiScelta);
 		numeriScritti--;
+	}
+
+	/**
+	 * Resetta i valori presenti sulla mappa
+	 */
+	public void resettaMappa() {
+		for (int i = 0; i < dimensione; i++) {
+			for (int j = 0; j < dimensione; j++) {
+				Posizione pos = new Posizione(i, j);
+				delete(getValore(pos), pos);
+			}
+		}
+	}
+
+	/**
+	 * 
+	 */
+	public InsiemePosizioni posizioniCorrette() {
+		IPLinkedList posizioniScritte = new IPLinkedList();
+		if (soluzione != null) {
+			for (int i = 0; i < dimensione; i++) {
+				for (int j = 0; j < dimensione; j++) {
+					Posizione pos = new Posizione(i, j);
+					if (griglia.getValore(pos) != 0 && griglia.getValore(pos) == soluzione.getValore(pos))
+						posizioniScritte.addLast(pos);
+				}
+			}
+		}
+		return posizioniScritte;
+	}
+
+	public InsiemePosizioni posizioniScorrette() {
+		IPLinkedList posizioniScritte = new IPLinkedList();
+		if (soluzione != null) {
+			for (int i = 0; i < dimensione; i++) {
+				for (int j = 0; j < dimensione; j++) {
+					Posizione pos = new Posizione(i, j);
+					if (griglia.getValore(pos) != 0 && griglia.getValore(pos) != soluzione.getValore(pos))
+						posizioniScritte.addLast(pos);
+				}
+			}
+		}
+		return posizioniScritte;
 	}
 
 	@Override
@@ -94,11 +148,31 @@ public class Mappa implements MappaIF {
 	}
 
 	/**
-	 * Salva la posizione
+	 * Salva la soluzione della mappa
 	 */
 	@Override
 	public void salva() {
 		soluzione = new Mappa(this);
+	}
+
+	/**
+	 * Salva lo stato della mappa
+	 */
+	public void salvaIstanza() {
+		ripristino = new Mappa(this);
+	}
+
+	/**
+	 * Riporta lo stato della mappa all'ultimo salvataggio
+	 */
+	public void ripristinaIstanza() {
+		for (int i = 0; i < dimensione; i++) {
+			for (int j = 0; j < dimensione; j++) {
+				Posizione pos = new Posizione(i, j);
+				if (ripristino.getValore(pos) != 0)
+					write(ripristino.getValore(pos), pos);
+			}
+		}
 	}
 
 	/**
@@ -131,6 +205,21 @@ public class Mappa implements MappaIF {
 		}
 		Mappa mappa = (Mappa) arg0;
 		return mappa.griglia.equals(this.griglia);
+	}
+
+	/**
+	 * Ritorna una posizione casuale appartenente alla mappa
+	 * 
+	 * @return Una posizione in modo causale
+	 */
+	public Posizione getPosizioneRandom() {
+		Posizione ritorno = null;
+		Random random = new Random();
+		do {
+			ritorno = new Posizione(random.nextInt(dimensione), random.nextInt(dimensione));
+		} while (posizioniRandom.contiene(ritorno));
+		posizioniRandom.addLast(ritorno);
+		return ritorno;
 	}
 
 	@Override

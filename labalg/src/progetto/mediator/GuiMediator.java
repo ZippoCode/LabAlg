@@ -14,6 +14,7 @@ import javax.swing.JRadioButton;
 
 import progetto.builder.BuilderMappa;
 import progetto.builder.Director;
+import progetto.builder.Mappa;
 import progetto.command.AvantiCommand;
 import progetto.command.IndietroCommand;
 import progetto.command.WriteCommand;
@@ -23,6 +24,7 @@ import progetto.gui.JIstruzioniFrame;
 import progetto.gui.JSceltaFrame;
 import progetto.state.FSM;
 import progetto.state.State;
+import progetto.template_method.Kenken;
 import progetto.utility.GestoreTesto;
 import progetto.utility.GetStringa;
 import progetto.utility.Posizione;
@@ -30,9 +32,9 @@ import progetto.utility.Posizione;
 /**
  * 
  * @author Salvatore
- * @version 1.1.6
+ * @version 2.0.0
  */
-public class GuiMediator extends FSM implements Mediator {
+public class GuiMediator extends FSM implements Mediator, Runnable {
 
 	private final State START = new StartState();
 	private final State SCELTA = new SceltaState();
@@ -51,6 +53,9 @@ public class GuiMediator extends FSM implements Mediator {
 	private JSceltaFrame jsf = null;
 	private JCella cella;
 	private JGrigliaPanel jGrigliaPanel = null;
+	private Kenken kenken = null;
+	private int dimMappa = -1;
+	private Mappa mappa = null;
 	private HashMap<String, JCella> mappaCelle = new HashMap<>();
 	private String testo = "CLICCARE SU GIOCA E SELEZIONARE LA DIMENSIONE DELLA GRIGLIA,"
 			+ "\nPER SCRIVERE UN NUMERO E' SUFFICIENTIE CLICCARE SULLA POSIZIONE\n"
@@ -267,10 +272,12 @@ public class GuiMediator extends FSM implements Mediator {
 			Director dir = new Director(bm);
 			dir.buildInsiemeBlocchi(gt);
 			dir.creaGriglia(Integer.parseInt(dim));
+			mappa = bm.getMappa();
+			dimMappa = mappa.getDimensioneMappa();
+			kenken = new Kenken(mappa);
 			jGrigliaPanel.settaBordo(nome);
-			jGrigliaPanel.creaJGrigliaPanel(bm.getMappa());
-			Thread t = new Thread(jGrigliaPanel);
-			t.start();
+			jGrigliaPanel.creaJGrigliaPanel(mappa.getInsiemeBlocchi(), dimMappa);
+			run();
 			transition(GIOCA);
 		}
 
@@ -305,11 +312,12 @@ public class GuiMediator extends FSM implements Mediator {
 						"Vuoi vedere la soluzione?\nATTENZIONE NON SARA' POSSIBILE CONTINUARE A GIOCARE", "Conferma",
 						JOptionPane.YES_OPTION);
 				if (risposta == JOptionPane.YES_OPTION) {
-					jGrigliaPanel.visualizzaSoluzione();
+					jGrigliaPanel.visualizzaSoluzione(mappa.getSoluzione());
 					transition(RELAX);
 				}
 				break;
 			case "reset":
+				mappa.resettaMappa();
 				jGrigliaPanel.restart();
 				break;
 			case "avanti":
@@ -319,23 +327,25 @@ public class GuiMediator extends FSM implements Mediator {
 				new IndietroCommand();
 				break;
 			case "check":
-				jGrigliaPanel.checkSoluzione();
+				jGrigliaPanel.checkSoluzione(mappa.posizioniCorrette(), mappa.posizioniScorrette());
 				break;
 			case "saveState":
-				jGrigliaPanel.salvaStato();
+				mappa.salvaIstanza();
 				restoreState.setEnabled(true);
 				JOptionPane.showMessageDialog(null, "Lo stato è stato salvato", "Conferma",
 						JOptionPane.INFORMATION_MESSAGE);
 				break;
 			case "restoreState":
-				jGrigliaPanel.ripristinaStato();
+				mappa.resettaMappa();
+				jGrigliaPanel.ripristinaStato(mappa);
 				JOptionPane.showMessageDialog(null, "Lo stato è stato ripristinato", "Conferma",
 						JOptionPane.INFORMATION_MESSAGE);
 				break;
 			case "help":
-				Posizione posizione = jGrigliaPanel.posRandom();
-				jGrigliaPanel.aiutalo(posizione);
-				if (jGrigliaPanel.soluzioneCompleta())
+				Posizione posizione = mappa.getPosizioneRandom();
+				mappa.write(mappa.getSoluzione().getValore(posizione), posizione);
+				jGrigliaPanel.aiutalo(posizione, mappa.getSoluzione().getValore(posizione));
+				if (mappa.equals(mappa.getSoluzione()))
 					transition(RISOLTO);
 				break;
 			case "gioca":
@@ -362,10 +372,10 @@ public class GuiMediator extends FSM implements Mediator {
 						@Override
 						public void keyTyped(KeyEvent ke) {
 							String value = String.valueOf(ke.getKeyChar());
-							if (jGrigliaPanel.possoScriverlo(value)) {
-								new WriteCommand(jc, value, jGrigliaPanel);
+							if (jGrigliaPanel.possoScriverlo(value, dimMappa)) {
+								new WriteCommand(jc, value, mappa, jGrigliaPanel);
 							}
-							if (jGrigliaPanel.soluzioneCompleta()) {
+							if (mappa.equals(mappa.getSoluzione())) {
 								transition(RISOLTO);
 							}
 						}
@@ -395,5 +405,10 @@ public class GuiMediator extends FSM implements Mediator {
 		public void actionPerformed(ActionEvent arg) {
 			manageEvent(arg);
 		}
+	}
+
+	@Override
+	public void run() {
+		kenken.risolvi();
 	}
 }
