@@ -1,8 +1,7 @@
 package progetto.strategy;
 
-import java.util.LinkedList;
-
 import progetto.utility.Cella;
+import progetto.utility.Insieme;
 
 /**
  * 
@@ -19,13 +18,13 @@ import progetto.utility.Cella;
 public class Divisione implements Tipo {
 
 	@Override
-	public int aggiornaRisultato(LinkedList<Cella> lista) {
-		if (lista.size() != 2)
+	public int aggiornaRisultato(Insieme<Cella> lista) {
+		if (lista.dimensione() != 2)
 			// Se il numero di elementi della lista è superiore a due non è
 			// possibile effettuare la sottrizione ai fini del KenKen
 			throw new RuntimeException("Dimensione errata.");
-		int a = lista.get(0).getValore();
-		int b = lista.get(1).getValore();
+		int a = lista.getElemento(0).getValore();
+		int b = lista.getElemento(1).getValore();
 		if (a == 0 && b == 0)
 			return 0;
 		if (a == 0 && b != 0)

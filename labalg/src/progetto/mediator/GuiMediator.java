@@ -21,6 +21,7 @@ import progetto.command.WriteCommand;
 import progetto.gui.JCella;
 import progetto.gui.JGrigliaPanel;
 import progetto.gui.JIstruzioniFrame;
+import progetto.gui.JRisoltoFrame;
 import progetto.gui.JSceltaFrame;
 import progetto.state.FSM;
 import progetto.state.State;
@@ -47,10 +48,12 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 	private MediatorAdapter adapter = new MediatorAdapter();
 	private JButton risolvi, reset, avanti, indietro, check, saveState, restoreState, help;
 	private JButton conferma;
+	private JButton play, noplay = null;
 	private JRadioButton tre, quattro, cinque, sei, sette, otto, nove;
 	private JMenuItem gioca, exit, istruzioni, contatti, comandi;
 	private String dim = null;
 	private JSceltaFrame jsf = null;
+	private JRisoltoFrame jrf = null;
 	private JCella cella;
 	private JGrigliaPanel jGrigliaPanel = null;
 	private Kenken kenken = null;
@@ -80,7 +83,16 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 	}
 
 	private class StartState extends MediatorState {
-		private int COUNTER = 14;
+		private int COUNTER = 24;
+
+		@Override
+		public void entryState() {
+
+			jsf = new JSceltaFrame(this);
+			jsf.dispose();
+			jrf = new JRisoltoFrame(this);
+			jrf.dispose();
+		}
 
 		public void manageEvent(ActionEvent event) {
 			JComponent component = (JComponent) event.getSource();
@@ -144,6 +156,52 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 				contatti = (JMenuItem) component;
 				contatti.addActionListener(adapter);
 				break;
+			case "3":
+				tre = (JRadioButton) component;
+				tre.addActionListener(adapter);
+				tre.setSelected(true);
+				break;
+			case "4":
+				quattro = (JRadioButton) component;
+				quattro.addActionListener(adapter);
+				quattro.setSelected(false);
+				break;
+			case "5":
+				cinque = (JRadioButton) component;
+				cinque.addActionListener(adapter);
+				cinque.setSelected(false);
+				break;
+			case "6":
+				sei = (JRadioButton) component;
+				sei.setSelected(false);
+				break;
+			case "7":
+				sette = (JRadioButton) component;
+				sette.addActionListener(adapter);
+				sette.setSelected(false);
+				break;
+			case "8":
+				otto = (JRadioButton) component;
+				otto.addActionListener(adapter);
+				otto.setSelected(false);
+				break;
+			case "9":
+				nove = (JRadioButton) component;
+				nove.addActionListener(adapter);
+				nove.setSelected(false);
+				break;
+			case "conferma":
+				conferma = (JButton) component;
+				conferma.addActionListener(adapter);
+				break;
+			case "play":
+				play = (JButton) component;
+				play.addActionListener(adapter);
+				break;
+			case "noplay":
+				noplay = (JButton) component;
+				noplay.addActionListener(adapter);
+				break;
 			default:
 				jGrigliaPanel = (JGrigliaPanel) component;
 				break;
@@ -156,6 +214,7 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 	}
 
 	private class RelaxState extends MediatorState {
+
 		@Override
 		public void entryState() {
 			risolvi.setEnabled(false);
@@ -182,7 +241,20 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 				JOptionPane.showMessageDialog(null,
 						"Studente: Salvatore Prochilo\nMatricola: 150097\nE-mail: prochilo.salvatore@gmail.com", "Info",
 						JOptionPane.INFORMATION_MESSAGE);
-			} else if (((JComponent) event.getSource()).getName().equals("conferma")) {
+			}
+		}
+	}
+
+	private class SceltaState extends MediatorState {
+
+		@Override
+		public void entryState() {
+			jsf.setVisible(true);
+		}
+
+		@Override
+		public void manageEvent(ActionEvent event) {
+			if (((JComponent) event.getSource()).getName().equals("conferma")) {
 				if (tre.isSelected()) {
 					dim = "3";
 				} else if (quattro.isSelected()) {
@@ -198,54 +270,8 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 				} else if (nove.isSelected()) {
 					dim = "9";
 				}
-				jsf.dispose();
+				jsf.setVisible(false);
 				transition(BUILDER);
-			}
-		}
-	}
-
-	private class SceltaState extends MediatorState {
-
-		@Override
-		public void entryState() {
-			jsf = new JSceltaFrame(this);
-		}
-
-		@Override
-		public void manageEvent(ActionEvent event) {
-			JComponent component = (JComponent) event.getSource();
-			String name = component.getName();
-			if (name.equals("3")) {
-				tre = (JRadioButton) component;
-				tre.addActionListener(adapter);
-				tre.setSelected(true);
-			} else if (name.equals("4")) {
-				quattro = (JRadioButton) component;
-				quattro.addActionListener(adapter);
-				quattro.setSelected(false);
-			} else if (name.equals("5")) {
-				cinque = (JRadioButton) component;
-				cinque.addActionListener(adapter);
-				cinque.setSelected(false);
-			} else if (name.equals("6")) {
-				sei = (JRadioButton) component;
-				sei.setSelected(false);
-			} else if (name.equals("7")) {
-				sette = (JRadioButton) component;
-				sette.addActionListener(adapter);
-				sette.setSelected(false);
-			} else if (name.equals("8")) {
-				otto = (JRadioButton) component;
-				otto.addActionListener(adapter);
-				otto.setSelected(false);
-			} else if (name.equals("9")) {
-				nove = (JRadioButton) component;
-				nove.addActionListener(adapter);
-				nove.setSelected(false);
-			} else if (name.equals("conferma")) {
-				conferma = (JButton) component;
-				conferma.addActionListener(adapter);
-				transition(RELAX);
 			}
 		}
 	}
@@ -336,8 +362,8 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 						JOptionPane.INFORMATION_MESSAGE);
 				break;
 			case "restoreState":
-				mappa.resettaMappa();
-				jGrigliaPanel.ripristinaStato(mappa);
+				Mappa ripristino = mappa.ripristinaIstanza();
+				jGrigliaPanel.ripristinaStato(ripristino);
 				JOptionPane.showMessageDialog(null, "Lo stato è stato ripristinato", "Conferma",
 						JOptionPane.INFORMATION_MESSAGE);
 				break;
@@ -345,8 +371,10 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 				Posizione posizione = mappa.getPosizioneRandom();
 				mappa.write(mappa.getSoluzione().getValore(posizione), posizione);
 				jGrigliaPanel.aiutalo(posizione, mappa.getSoluzione().getValore(posizione));
-				if (mappa.equals(mappa.getSoluzione()))
+				if (mappa.equals(mappa.getSoluzione())) {
+					help.setEnabled(false);
 					transition(RISOLTO);
+				}
 				break;
 			case "gioca":
 				transition(SCELTA);
@@ -389,13 +417,23 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 	}
 
 	private class RisoltoState extends MediatorState {
+
 		@Override
 		public void entryState() {
-			int i = JOptionPane.showConfirmDialog(null, "Vuoi iniziare una nuova partita", "NUOVA PARTITA?",
-					JOptionPane.YES_NO_OPTION);
-			if (i == JOptionPane.YES_OPTION)
+			jrf.setVisible(true);
+		}
+
+		@Override
+		public void exitState() {
+			jrf.setVisible(false);
+		}
+
+		@Override
+		public void manageEvent(ActionEvent event) {
+			if (((JComponent) event.getSource()).getName().equals("play")) {
+				jrf.setVisible(false);
 				transition(SCELTA);
-			else
+			} else if (((JComponent) event.getSource()).getName().equals("noplay"))
 				transition(USCITA);
 		}
 	}

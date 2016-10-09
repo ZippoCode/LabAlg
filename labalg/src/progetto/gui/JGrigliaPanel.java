@@ -6,17 +6,17 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
 
 import progetto.builder.Mappa;
 import progetto.mediator.Mediator;
 import progetto.strategy.Blocco;
 import progetto.utility.Cella;
 import progetto.utility.Counter;
-import progetto.utility.InsiemePosizioni;
+import progetto.utility.Insieme;
 import progetto.utility.Posizione;
 
 /**
@@ -37,10 +37,10 @@ public class JGrigliaPanel extends JPanel {
 		gbl = new GridBagLayout();
 		gbc = new GridBagConstraints();
 		setLayout(gbl);
-		setBackground(Color.decode("#FF7F50"));
+		setBackground(Color.decode("#BBDEFB"));
 	}
 
-	public void creaJGrigliaPanel(LinkedList<Blocco> listaBlocchi, int dimensione) {
+	public void creaJGrigliaPanel(Insieme<Blocco> listaBlocchi, int dimensione) {
 		removeAll();
 		revalidate();
 		repaint();
@@ -49,9 +49,9 @@ public class JGrigliaPanel extends JPanel {
 		for (Blocco blocco : listaBlocchi) {
 			String linea = blocco.getOperatore() + " " + String.valueOf(blocco.getRisultato());
 			flag = false;
-			LinkedList<Cella> lista = blocco.getListaCelle();
-			for (int i = 0; i < lista.size(); i++) {
-				JCella jc = new JCella(lista.get(i), dimensione);
+			Insieme<Cella> lista = blocco.getListaCelle();
+			for (int i = 0; i < lista.dimensione(); i++) {
+				JCella jc = new JCella(lista.getElemento(i), dimensione);
 				jc.setName(jc.getPosizione().toString());
 				mediator.manageEvent(new ActionEvent(jc, Counter.generateID(), null));
 				if (!flag) {
@@ -81,7 +81,9 @@ public class JGrigliaPanel extends JPanel {
 	}
 
 	public void settaBordo(String file) {
-		setBorder(BorderFactory.createTitledBorder(file));
+		TitledBorder bf = BorderFactory.createTitledBorder(file);
+		bf.setTitleColor(Color.BLACK);
+		setBorder(bf);
 	}
 
 	public void eliminaValoreMappa(Posizione posizione) {
@@ -104,7 +106,7 @@ public class JGrigliaPanel extends JPanel {
 		}
 	}
 
-	public void checkSoluzione(InsiemePosizioni corrette, InsiemePosizioni scorrette) {
+	public void checkSoluzione(Insieme<Posizione> corrette, Insieme<Posizione> scorrette) {
 		for (JCella jc : getListaJCelle()) {
 			jc.setBackground(Color.WHITE);
 		}

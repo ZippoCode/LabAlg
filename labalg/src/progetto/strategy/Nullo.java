@@ -1,8 +1,7 @@
 package progetto.strategy;
 
-import java.util.LinkedList;
-
 import progetto.utility.Cella;
+import progetto.utility.Insieme;
 
 public class Nullo implements Tipo {
 	/**
@@ -19,12 +18,12 @@ public class Nullo implements Tipo {
 	 * da una sola cella e dunque non deve essere eseguita alcuna operazione
 	 */
 	@Override
-	public int aggiornaRisultato(LinkedList<Cella> lista) {
-		if (lista.size() != 1) {
+	public int aggiornaRisultato(Insieme<Cella> lista) {
+		if (lista.dimensione() != 1) {
 			// La lista deve contenete al massimo un elemento
 			throw new RuntimeException();
 		}
-		return lista.get(0).getValore();
+		return lista.getElemento(0).getValore();
 	}
 
 }

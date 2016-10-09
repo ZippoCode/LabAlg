@@ -3,8 +3,8 @@ package progetto.builder;
 import java.util.StringTokenizer;
 
 import progetto.utility.GestoreTesto;
-import progetto.utility.IPLinkedList;
-import progetto.utility.InsiemePosizioni;
+import progetto.utility.InsiemeLL;
+import progetto.utility.Insieme;
 import progetto.utility.Operatore;
 import progetto.utility.Posizione;
 
@@ -33,7 +33,7 @@ public class Director {
 			StringTokenizer st = new StringTokenizer(linea);
 			Operatore op = Operatore.getOperatore(st.nextToken());
 			Integer ris = Integer.parseInt(st.nextToken());
-			InsiemePosizioni ip = new IPLinkedList();
+			Insieme<Posizione> ip = new InsiemeLL<Posizione>();
 			while (st.hasMoreTokens()) {
 				String s = st.nextToken();
 				char x = s.charAt(0);

@@ -37,7 +37,7 @@ public class JComandiPanel extends JPanel {
 	private JButton help = null;
 
 	public JComandiPanel(Mediator mediator) {
-		setBackground(Color.decode("#FFD700"));
+		setBackground(Color.decode("#2196F3"));
 		setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 		setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		sistemaBottone(risolvi, "risolvi", "Risolvi", mediator);

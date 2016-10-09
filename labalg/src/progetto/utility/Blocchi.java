@@ -1,7 +1,6 @@
 package progetto.utility;
 
 import java.util.Iterator;
-import java.util.LinkedList;
 
 import progetto.strategy.Blocco;
 
@@ -18,15 +17,15 @@ import progetto.strategy.Blocco;
 
 public class Blocchi {
 
-	private LinkedList<Blocco> blocchi = null;
-	private InsiemePosizioni posizioni = null;
+	private Insieme<Blocco> blocchi = null;
+	private Insieme<Posizione> posizioni = null;
 
 	/**
 	 * Costruttore normale
 	 */
 	public Blocchi() {
-		blocchi = new LinkedList<Blocco>();
-		posizioni = new IPLinkedList();
+		blocchi = new InsiemeLL<Blocco>();
+		posizioni = new InsiemeLL<Posizione>();
 	}// costruttore di default
 
 	/**
@@ -35,10 +34,10 @@ public class Blocchi {
 	 * @param insieme
 	 */
 	public Blocchi(Blocchi insieme) {
-		blocchi = new LinkedList<Blocco>();
-		posizioni = new IPLinkedList();
+		blocchi = new InsiemeLL<Blocco>();
+		posizioni = new InsiemeLL<Posizione>();
 		for (Blocco blocco : insieme.blocchi)
-			blocchi.add(new Blocco(blocco));
+			blocchi.addLast(new Blocco(blocco));
 		for (Posizione posizione : insieme.posizioni)
 			posizioni.addLast(new Posizione(posizione));
 	}
@@ -124,12 +123,12 @@ public class Blocchi {
 	}
 
 	// ritorna la lista dei blocchi
-	public LinkedList<Blocco> getListaBlocchi() {
+	public Insieme<Blocco> getListaBlocchi() {
 		return blocchi;
 	}
 
 	// ritorna la lista delle posizioni
-	public InsiemePosizioni getListaPosizioni() {
+	public Insieme<Posizione> getListaPosizioni() {
 		return posizioni;
 	}
 
@@ -148,8 +147,8 @@ public class Blocchi {
 		if (!posizioni.contiene(posizione))
 			return null;
 		for (int i = 0; i < posizioni.dimensione(); i++) {
-			if (i < posizioni.dimensione() - 1 && posizioni.getPosizione(i).equals(posizione))
-				return posizioni.getPosizione(i + 1);
+			if (i < posizioni.dimensione() - 1 && posizioni.getElemento(i).equals(posizione))
+				return posizioni.getElemento(i + 1);
 		}
 		return null;
 	}

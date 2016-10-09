@@ -28,13 +28,13 @@ public class JRisoltoFrame extends JFrame {
 	public JRisoltoFrame(Mediator mediator) {
 		JPanel contentPanel = new JPanel();
 		setContentPane(contentPanel);
-		contentPanel.setLayout(new FlowLayout());
+		setLayout(new FlowLayout());
 		risolto = new Label("Complimenti hai risolto il gioco, vuoi iniziare una nuova partita?");
 		newPlay = new JButton("SI");
-		newPlay.setName("newplay");
+		newPlay.setName("play");
 		mediator.manageEvent(new ActionEvent(newPlay, Counter.generateID(), null));
 		noNewPlay = new JButton("NO");
-		noNewPlay.setName("nonewplay");
+		noNewPlay.setName("noplay");
 		mediator.manageEvent(new ActionEvent(noNewPlay, Counter.generateID(), null));
 		contentPanel.add(risolto);
 		contentPanel.add(newPlay);
@@ -42,8 +42,8 @@ public class JRisoltoFrame extends JFrame {
 		pack();
 		setSize(new Dimension(400, 100));
 		setLocation(500, 200);
-		setVisible(true);
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setVisible(false);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 
 }

@@ -1,8 +1,7 @@
 package progetto.strategy;
 
-import java.util.LinkedList;
-
 import progetto.utility.Cella;
+import progetto.utility.Insieme;
 
 /**
  * 
@@ -14,7 +13,7 @@ import progetto.utility.Cella;
 public class Addizione implements Tipo {
 
 	@Override
-	public int aggiornaRisultato(LinkedList<Cella> lista) {
+	public int aggiornaRisultato(Insieme<Cella> lista) {
 		int risultatoCorrente = 0;
 		for (Cella cella : lista) {
 			risultatoCorrente += cella.getValore();

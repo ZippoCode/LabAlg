@@ -3,9 +3,10 @@ package progetto.builder;
 import progetto.strategy.Blocco;
 import progetto.utility.Blocchi;
 import progetto.utility.Griglia;
-import progetto.utility.IPLinkedList;
-import progetto.utility.InsiemePosizioni;
+import progetto.utility.InsiemeLL;
+import progetto.utility.Insieme;
 import progetto.utility.Operatore;
+import progetto.utility.Posizione;
 
 /**
  * 
@@ -24,14 +25,14 @@ public class BuilderMappa implements BuilderIF {
 	}
 
 	@Override
-	public void addBlocco(Operatore operatore, int risultato, InsiemePosizioni listaPosizioni) {
-		insieme.addBlocco(new Blocco(operatore, risultato, (IPLinkedList) listaPosizioni));
+	public void addBlocco(Operatore operatore, int risultato, Insieme<Posizione> listaPosizioni) {
+		insieme.addBlocco(new Blocco(operatore, risultato, (InsiemeLL<Posizione>) listaPosizioni));
 	}
 
 	@Override
-	public void addBlocco(String operatore, int risultato, InsiemePosizioni listaPosizioni) {
+	public void addBlocco(String operatore, int risultato, Insieme<Posizione> listaPosizioni) {
 		Operatore op = Operatore.getOperatore(operatore);
-		insieme.addBlocco(new Blocco(op, risultato, (IPLinkedList) listaPosizioni));
+		insieme.addBlocco(new Blocco(op, risultato, (InsiemeLL<Posizione>) listaPosizioni));
 	}
 
 	@Override

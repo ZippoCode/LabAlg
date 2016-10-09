@@ -1,9 +1,8 @@
 package progetto.builder;
 
-import java.util.LinkedList;
-
 import progetto.iterator.MioIteratore;
 import progetto.strategy.Blocco;
+import progetto.utility.Insieme;
 import progetto.utility.Posizione;
 
 public interface MappaIF extends MioIteratore {
@@ -62,7 +61,7 @@ public interface MappaIF extends MioIteratore {
 	 * 
 	 * @return
 	 */
-	public LinkedList<Blocco> getInsiemeBlocchi();
+	public Insieme<Blocco> getInsiemeBlocchi();
 
 	/**
 	 * 

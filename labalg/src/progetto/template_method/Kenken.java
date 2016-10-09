@@ -1,8 +1,8 @@
 package progetto.template_method;
 
 import progetto.builder.Mappa;
-import progetto.utility.IPLinkedList;
-import progetto.utility.InsiemePosizioni;
+import progetto.utility.InsiemeLL;
+import progetto.utility.Insieme;
 import progetto.utility.Posizione;
 
 /**
@@ -15,7 +15,7 @@ import progetto.utility.Posizione;
 public class Kenken extends Problema<Posizione, Integer> {
 
 	private Mappa mappa = null;
-	private InsiemePosizioni posizioniCompletate = new IPLinkedList();
+	private Insieme<Posizione> posizioniCompletate = new InsiemeLL<Posizione>();
 
 	public Kenken(Mappa mappa) {
 		this.mappa = mappa;

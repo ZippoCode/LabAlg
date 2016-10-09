@@ -1,13 +1,12 @@
 package progetto.builder;
 
-import java.util.LinkedList;
 import java.util.Random;
 
 import progetto.strategy.Blocco;
 import progetto.utility.Blocchi;
 import progetto.utility.Griglia;
-import progetto.utility.IPLinkedList;
-import progetto.utility.InsiemePosizioni;
+import progetto.utility.InsiemeLL;
+import progetto.utility.Insieme;
 import progetto.utility.Posizione;
 
 /**
@@ -24,7 +23,7 @@ public class Mappa implements MappaIF {
 	private Mappa soluzione = null;
 	private Mappa ripristino = null;
 	private Blocchi insieme = null;
-	private InsiemePosizioni posizioniRandom = null;
+	private Insieme<Posizione> posizioniRandom = null;
 	private int dimensione = -1;
 	private int numeriScritti = 0;
 
@@ -40,7 +39,7 @@ public class Mappa implements MappaIF {
 		griglia = new Griglia(dimensione);
 		this.insieme = insieme;
 		this.dimensione = dimensione;
-		posizioniRandom = new IPLinkedList();
+		posizioniRandom = new InsiemeLL<Posizione>();
 	}
 
 	/**
@@ -82,7 +81,7 @@ public class Mappa implements MappaIF {
 	public void write(Integer scelta, Posizione puntoDiScelta) {
 		griglia.scriviNumero(puntoDiScelta, scelta);
 		insieme.scriviBlocco(puntoDiScelta, scelta);
-		//posizioniRandom.addLast(puntoDiScelta);
+		// posizioniRandom.addLast(puntoDiScelta);
 		numeriScritti++;
 	}
 
@@ -90,7 +89,7 @@ public class Mappa implements MappaIF {
 	public void delete(Integer scelta, Posizione puntoDiScelta) {
 		griglia.cancellaNumero(puntoDiScelta);
 		insieme.cancellaBlocco(puntoDiScelta);
-		//posizioniRandom.remove(puntoDiScelta);
+		// posizioniRandom.remove(puntoDiScelta);
 		numeriScritti--;
 	}
 
@@ -109,8 +108,8 @@ public class Mappa implements MappaIF {
 	/**
 	 * 
 	 */
-	public InsiemePosizioni posizioniCorrette() {
-		IPLinkedList posizioniScritte = new IPLinkedList();
+	public Insieme<Posizione> posizioniCorrette() {
+		InsiemeLL<Posizione> posizioniScritte = new InsiemeLL<Posizione>();
 		if (soluzione != null) {
 			for (int i = 0; i < dimensione; i++) {
 				for (int j = 0; j < dimensione; j++) {
@@ -123,8 +122,8 @@ public class Mappa implements MappaIF {
 		return posizioniScritte;
 	}
 
-	public InsiemePosizioni posizioniScorrette() {
-		IPLinkedList posizioniScritte = new IPLinkedList();
+	public Insieme<Posizione> posizioniScorrette() {
+		InsiemeLL<Posizione> posizioniScritte = new InsiemeLL<Posizione>();
 		if (soluzione != null) {
 			for (int i = 0; i < dimensione; i++) {
 				for (int j = 0; j < dimensione; j++) {
@@ -165,7 +164,9 @@ public class Mappa implements MappaIF {
 	/**
 	 * Riporta lo stato della mappa all'ultimo salvataggio
 	 */
-	public void ripristinaIstanza() {
+	public Mappa ripristinaIstanza() {
+		Mappa ritorno = new Mappa(ripristino);
+		resettaMappa();
 		for (int i = 0; i < dimensione; i++) {
 			for (int j = 0; j < dimensione; j++) {
 				Posizione pos = new Posizione(i, j);
@@ -173,15 +174,11 @@ public class Mappa implements MappaIF {
 					write(ripristino.getValore(pos), pos);
 			}
 		}
+		return ritorno;
 	}
 
-	/**
-	 * Ritorna la LinkedList dell'insieme dei blocchi
-	 * 
-	 * @return la LinkedList contenente l'insieme di blocchi
-	 */
 	@Override
-	public LinkedList<Blocco> getInsiemeBlocchi() {
+	public Insieme<Blocco> getInsiemeBlocchi() {
 		return insieme.getListaBlocchi();
 	}
 

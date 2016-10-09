@@ -10,15 +10,13 @@ import progetto.mediator.Mediator;
 import progetto.utility.Counter;
 
 /**
+ * Interfaccia principale
  * 
  * @author Salvatore
  * @version 1.0.0
  * 
  */
 
-/*
- * GUI Rappresenta l'interfaccia grafica principale del Kenken
- */
 public class Gui extends JFrame {
 
 	private static final long serialVersionUID = 4728769432669358101L;
@@ -43,6 +41,7 @@ public class Gui extends JFrame {
 		add(jcp, BorderLayout.SOUTH);
 		add(jgp, BorderLayout.CENTER);
 
+		
 		setTitle("Kenken");
 		setLocation(500, 50);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

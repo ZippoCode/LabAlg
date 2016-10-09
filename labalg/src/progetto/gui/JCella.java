@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -13,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import progetto.utility.Cella;
+import progetto.utility.Insieme;
 import progetto.utility.Posizione;
 
 /**
@@ -56,7 +56,7 @@ public class JCella extends JButton {
 	 * 
 	 * @param lista
 	 */
-	public void bordi(LinkedList<Cella> lista) {
+	public void bordi(Insieme<Cella> lista) {
 		int fattore = 0;
 		if (dimensione >= 6)
 			fattore = 18 / dimensione;

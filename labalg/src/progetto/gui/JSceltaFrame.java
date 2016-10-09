@@ -72,7 +72,7 @@ public class JSceltaFrame extends JFrame {
 		setResizable(false);
 		setSize(300, 100);
 		setLocation(500, 200);
-		setVisible(true);
+		setVisible(false);
 	}
 
 }
