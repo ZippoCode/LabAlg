@@ -2,12 +2,17 @@ package progetto.gui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -22,6 +27,14 @@ import progetto.utility.Insieme;
 import progetto.utility.Posizione;
 
 /**
+ * Il pannello gestisce e configura tutti gli aspetti inerenti alla griglia. Ha
+ * il compito di visualizzare su schermo la griglia. Sono presenti i quattro
+ * bottoni per la visualizzazione iniziale delle scelte. Per settare
+ * correttamente la posizione della griglia su schermo sono stati usati
+ * GridBagLayout e GridBigConstraints. La variabile mappaSelezionata è stata
+ * utilizzata per scegliere quando cambiare lo schermo visualizzato. Inoltre è
+ * stato ridefinito il metodo paintComponent(Graphics g) per impostare lo
+ * sfondo.
  * 
  * @author Salvatore
  * @version 2.0.0
@@ -34,17 +47,20 @@ public class JPanelMain extends JPanel {
 	private GridBagConstraints gbc = null;
 	private HashMap<Posizione, JPanelCella> hashMapJCella = null;
 	private Mediator mediator = null;
+	private boolean mappaSelezionata = false;
 
 	public JPanelMain(Mediator mediator) {
 		this.mediator = mediator;
 		creaJPanelIntro();
 	}
 
+	/**
+	 * Dispone i componenti iniziali
+	 */
 	public void creaJPanelIntro() {
 		removeAll();
 		revalidate();
 		repaint();
-		setBackground(Color.decode("#B3E5FC"));
 		settaBottone(introGame, "introGame", mediator);
 		settaBottone(introInfo, "introInfo", mediator);
 		settaBottone(introContatti, "introContatti", mediator);
@@ -62,13 +78,28 @@ public class JPanelMain extends JPanel {
 		mediator.manageEvent(new ActionEvent(bottone, Counter.generateID(), null));
 	}
 
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		if (!mappaSelezionata) {
+			BufferedImage background;
+			try {
+				background = ImageIO.read(new File("C:/Users/proch/git/Local_labalg/labalg/src/info/background.jpg"));
+				g.drawImage(background, 0, 0, null);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			setBackground(Color.decode("#E0F7FA"));
+		}
+	}
+
 	public void creaJPanelGriglia(Insieme<Blocco> listaBlocchi, int dimensione) {
 		removeAll();
 		revalidate();
 		repaint();
 		gbl = new GridBagLayout();
 		gbc = new GridBagConstraints();
-		setBackground(Color.decode("#E0F7FA"));
 		setLayout(gbl);
 		boolean flag = false;
 		hashMapJCella = new HashMap<Posizione, JPanelCella>();
@@ -96,6 +127,10 @@ public class JPanelMain extends JPanel {
 
 	public Collection<JPanelCella> getListaJCelle() {
 		return hashMapJCella.values();
+	}
+
+	public void changeFlag() {
+		mappaSelezionata = true;
 	}
 
 	public boolean possoScriverlo(String val, int dimensione) {

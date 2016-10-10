@@ -45,6 +45,7 @@ public class JFrameScelta extends JFrame {
 		setTitle("Scegli dimensione");
 		setResizable(false);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		setAlwaysOnTop(true);
 		setSize(300, 100);
 		setLocation(600, 300);
 		setVisible(false);

@@ -66,4 +66,5 @@ public class JPanelComandi extends JPanel {
 		mediator.manageEvent(new ActionEvent(bottone, Counter.generateID(), null));
 		add(bottone);
 	}
+
 }

@@ -44,6 +44,7 @@ public class JFrameRisolto extends JFrame {
 		pack();
 		setResizable(false);
 		setSize(new Dimension(400, 100));
+		setAlwaysOnTop(true);
 		setLocation(500, 200);
 		setVisible(false);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);

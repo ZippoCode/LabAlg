@@ -275,6 +275,7 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 
 		@Override
 		public void exitState() {
+			jPanelMain.changeFlag();
 			jsf.setVisible(false);
 		}
 
