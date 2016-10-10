@@ -83,7 +83,7 @@ public class JFrameIstruzioni extends JFrame {
 		dim = new Dimension(dimW, dimL);
 		setSize(dim);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setLocation(500, 200);
+		setLocation(600, 200);
 		setResizable(true);
 		setVisible(true);
 	}
