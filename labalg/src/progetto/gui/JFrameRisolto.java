@@ -1,5 +1,6 @@
 package progetto.gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Label;
@@ -19,13 +20,13 @@ import progetto.utility.Counter;
  * @author Salvatore
  * @version 1.0.0
  */
-public class JRisoltoFrame extends JFrame {
+public class JFrameRisolto extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private Label risolto = null;
 	private JButton newPlay, noNewPlay = null;
 
-	public JRisoltoFrame(Mediator mediator) {
+	public JFrameRisolto(Mediator mediator) {
 		JPanel contentPanel = new JPanel();
 		setContentPane(contentPanel);
 		setLayout(new FlowLayout());
@@ -39,11 +40,13 @@ public class JRisoltoFrame extends JFrame {
 		contentPanel.add(risolto);
 		contentPanel.add(newPlay);
 		contentPanel.add(noNewPlay);
+		contentPanel.setBackground(Color.WHITE);
 		pack();
+		setResizable(false);
 		setSize(new Dimension(400, 100));
 		setLocation(500, 200);
 		setVisible(false);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 	}
 
 }

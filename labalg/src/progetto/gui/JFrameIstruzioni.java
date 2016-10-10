@@ -26,7 +26,7 @@ import javax.swing.JTextArea;
  * @author Salvatore
  * @version 1.0.6
  */
-public class JIstruzioniFrame extends JFrame {
+public class JFrameIstruzioni extends JFrame {
 	private static final long serialVersionUID = -2878373186759475971L;
 	private JTextArea testo = null;
 	private JScrollPane jScrollPanel = null;
@@ -36,7 +36,7 @@ public class JIstruzioniFrame extends JFrame {
 	private int dimL = 300, dimW = 400;
 	private Dimension dim = null;
 
-	public JIstruzioniFrame() {
+	public JFrameIstruzioni() {
 
 		testo = new JTextArea();
 		esci = new JButton();

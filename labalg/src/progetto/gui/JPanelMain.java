@@ -1,6 +1,7 @@
 package progetto.gui;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -8,6 +9,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
@@ -25,33 +27,57 @@ import progetto.utility.Posizione;
  * @version 2.0.0
  */
 
-public class JGrigliaPanel extends JPanel {
+public class JPanelMain extends JPanel {
 	private static final long serialVersionUID = 1L;
+	private JButton introGame, introInfo, introContatti, introEsci;
 	private GridBagLayout gbl = null;
 	private GridBagConstraints gbc = null;
-	private HashMap<Posizione, JCella> hashMapJCella = null;
+	private HashMap<Posizione, JPanelCella> hashMapJCella = null;
 	private Mediator mediator = null;
 
-	public JGrigliaPanel(Mediator mediator) {
+	public JPanelMain(Mediator mediator) {
 		this.mediator = mediator;
-		gbl = new GridBagLayout();
-		gbc = new GridBagConstraints();
-		setLayout(gbl);
-		setBackground(Color.decode("#BBDEFB"));
+		creaJPanelIntro();
 	}
 
-	public void creaJGrigliaPanel(Insieme<Blocco> listaBlocchi, int dimensione) {
+	public void creaJPanelIntro() {
 		removeAll();
 		revalidate();
 		repaint();
+		setBackground(Color.decode("#B3E5FC"));
+		settaBottone(introGame, "introGame", mediator);
+		settaBottone(introInfo, "introInfo", mediator);
+		settaBottone(introContatti, "introContatti", mediator);
+		settaBottone(introEsci, "introEsci", mediator);
+	}
+
+	private void settaBottone(JButton bottone, String nome, Mediator mediator) {
+		String newName = nome.substring(5, nome.length());
+		bottone = new JButton(newName);
+		bottone.setName(nome);
+		bottone.setEnabled(true);
+		bottone.setBackground(Color.WHITE);
+		bottone.setFont(new Font("Ariel", Font.CENTER_BASELINE, 30));
+		add(bottone);
+		mediator.manageEvent(new ActionEvent(bottone, Counter.generateID(), null));
+	}
+
+	public void creaJPanelGriglia(Insieme<Blocco> listaBlocchi, int dimensione) {
+		removeAll();
+		revalidate();
+		repaint();
+		gbl = new GridBagLayout();
+		gbc = new GridBagConstraints();
+		setBackground(Color.decode("#E0F7FA"));
+		setLayout(gbl);
 		boolean flag = false;
-		hashMapJCella = new HashMap<Posizione, JCella>();
+		hashMapJCella = new HashMap<Posizione, JPanelCella>();
 		for (Blocco blocco : listaBlocchi) {
 			String linea = blocco.getOperatore() + " " + String.valueOf(blocco.getRisultato());
 			flag = false;
 			Insieme<Cella> lista = blocco.getListaCelle();
 			for (int i = 0; i < lista.dimensione(); i++) {
-				JCella jc = new JCella(lista.getElemento(i), dimensione);
+				JPanelCella jc = new JPanelCella(lista.getElemento(i), dimensione);
 				jc.setName(jc.getPosizione().toString());
 				mediator.manageEvent(new ActionEvent(jc, Counter.generateID(), null));
 				if (!flag) {
@@ -68,7 +94,7 @@ public class JGrigliaPanel extends JPanel {
 		}
 	}
 
-	public Collection<JCella> getListaJCelle() {
+	public Collection<JPanelCella> getListaJCelle() {
 		return hashMapJCella.values();
 	}
 
@@ -87,49 +113,49 @@ public class JGrigliaPanel extends JPanel {
 	}
 
 	public void eliminaValoreMappa(Posizione posizione) {
-		JCella jc = hashMapJCella.get(posizione);
+		JPanelCella jc = hashMapJCella.get(posizione);
 		if (jc.getPosizione().equals(posizione))
 			jc.setBackground(Color.WHITE);
 	}
 
 	public void visualizzaSoluzione(Mappa soluzione) {
-		for (JCella jc : getListaJCelle()) {
+		for (JPanelCella jc : getListaJCelle()) {
 			jc.setBackground(Color.WHITE);
 			jc.setText(String.valueOf(soluzione.getValore(jc.getPosizione())));
 		}
 	}
 
 	public void restart() {
-		for (JCella jc : getListaJCelle()) {
+		for (JPanelCella jc : getListaJCelle()) {
 			jc.setBackground(Color.WHITE);
 			jc.setText(" ");
 		}
 	}
 
 	public void checkSoluzione(Insieme<Posizione> corrette, Insieme<Posizione> scorrette) {
-		for (JCella jc : getListaJCelle()) {
+		for (JPanelCella jc : getListaJCelle()) {
 			jc.setBackground(Color.WHITE);
 		}
 		for (Posizione p : corrette) {
-			JCella jc = hashMapJCella.get(p);
+			JPanelCella jc = hashMapJCella.get(p);
 			jc.setBackground(Color.decode("#4CAF50"));
 		}
 		for (Posizione p : scorrette) {
-			JCella jc = hashMapJCella.get(p);
+			JPanelCella jc = hashMapJCella.get(p);
 			jc.setBackground(Color.decode("#F44336"));
 		}
 	}
 
 	public void ripristinaStato(Mappa mappa) {
 		restart();
-		for (JCella jc : getListaJCelle()) {
+		for (JPanelCella jc : getListaJCelle()) {
 			if (mappa.getValore(jc.getPosizione()) != 0)
 				jc.setText(String.valueOf((mappa.getValore(jc.getPosizione()))));
 		}
 	}
 
 	public void aiutalo(Posizione pos, int valore) {
-		JCella jc = hashMapJCella.get(pos);
+		JPanelCella jc = hashMapJCella.get(pos);
 		jc.setBackground(Color.WHITE);
 		jc.setText(String.valueOf(valore));
 		jc.setEnabled(false);

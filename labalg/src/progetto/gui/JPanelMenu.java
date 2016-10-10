@@ -1,6 +1,7 @@
 package progetto.gui;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 
 import javax.swing.BorderFactory;
@@ -21,7 +22,7 @@ import progetto.utility.Counter;
  * JMenu con i quali si possono scegliere differenti opzioni
  * 
  */
-public class JMenuPanel extends JMenuBar {
+public class JPanelMenu extends JMenuBar {
 
 	private static final long serialVersionUID = 1L;
 
@@ -34,31 +35,43 @@ public class JMenuPanel extends JMenuBar {
 	private JMenuItem contatti = null;
 	private JMenuItem comandi = null;
 
-	public JMenuPanel(Mediator mediator) {
-		setBackground(Color.decode("#FFFFFF"));
+	public JPanelMenu(Mediator mediator) {
+		Font f = new Font("Ariel", Font.BOLD, 15);
+		setBackground(Color.decode("#01579B"));
 		setBorder(BorderFactory.createLineBorder(Color.BLUE));
 		nuovo = new JMenu("Nuova partita");
 		nuovo.setName("nuovo");
+		nuovo.setFont(f);
+		nuovo.setForeground(Color.WHITE);
 		help = new JMenu("Aiuto");
 		help.setName("Help");
+		help.setFont(f);
+		help.setForeground(Color.WHITE);
 		info = new JMenu("Info");
 		info.setName("info");
+		info.setFont(f);
+		info.setForeground(Color.WHITE);
 		comandi = new JMenuItem("Comandi");
 		comandi.setName("comandi");
+		comandi.setFont(f);
 		play = new JMenuItem("Selezione griglia");
 		play.setName("gioca");
+		play.setFont(f);
 		exit = new JMenuItem("Exit");
 		exit.setName("exit");
+		exit.setFont(f);
 		nuovo.add(play);
 		nuovo.addSeparator();
 		nuovo.add(exit);
 		istruzioni = new JMenuItem("Istruzioni");
 		istruzioni.setName("istruzioni");
+		istruzioni.setFont(f);
 		help.add(istruzioni);
 		help.addSeparator();
 		help.add(comandi);
 		contatti = new JMenuItem("Contatti");
 		contatti.setName("contatti");
+		contatti.setFont(f);
 		info.add(contatti);
 		add(nuovo);
 		add(help);

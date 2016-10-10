@@ -1,8 +1,8 @@
 package progetto.command;
 
 import progetto.builder.Mappa;
-import progetto.gui.JCella;
-import progetto.gui.JGrigliaPanel;
+import progetto.gui.JPanelCella;
+import progetto.gui.JPanelMain;
 
 /**
  * Setta il valore di una JCella salvandosi quello che era scritto
@@ -14,13 +14,13 @@ import progetto.gui.JGrigliaPanel;
 
 public class WriteCommand extends AbstractCommand {
 
-	private JCella testo = null;
-	private JGrigliaPanel jGrigliaPanel = null;
+	private JPanelCella testo = null;
+	private JPanelMain jGrigliaPanel = null;
 	private Mappa mappa = null;
 	private String oldValue = " ";
 	private String newValue = " ";
 
-	public WriteCommand(JCella testo, String value, Mappa mappa, JGrigliaPanel jgp) {
+	public WriteCommand(JPanelCella testo, String value, Mappa mappa, JPanelMain jgp) {
 		jGrigliaPanel = jgp;
 		this.mappa = mappa;
 		oldValue = testo.getText();

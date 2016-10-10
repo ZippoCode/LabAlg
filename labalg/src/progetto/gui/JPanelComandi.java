@@ -24,7 +24,7 @@ import progetto.utility.Counter;
  * @version 1.0.2
  *
  */
-public class JComandiPanel extends JPanel {
+public class JPanelComandi extends JPanel {
 
 	private static final long serialVersionUID = 1978394422360866472L;
 	private JButton risolvi = null;
@@ -36,8 +36,8 @@ public class JComandiPanel extends JPanel {
 	private JButton restoreState = null;
 	private JButton help = null;
 
-	public JComandiPanel(Mediator mediator) {
-		setBackground(Color.decode("#2196F3"));
+	public JPanelComandi(Mediator mediator) {
+		setBackground(Color.decode("#01579B"));
 		setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 		setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		sistemaBottone(risolvi, "risolvi", "Risolvi", mediator);

@@ -20,9 +20,9 @@ import progetto.utility.Posizione;
  * rappresentazione grafica di una Cella della griglia
  * 
  * @author Salvatore
- * @version 1.0.10
+ * @version 1.2
  */
-public class JCella extends JButton {
+public class JPanelCella extends JButton {
 
 	private static final long serialVersionUID = -8325244841699871850L;
 	private Font fontCella = null, fontOR = null;
@@ -31,7 +31,7 @@ public class JCella extends JButton {
 	private int dimensione = 0;
 	private boolean modificabile = true;
 
-	public JCella(Cella cella, int dimensione) {
+	public JPanelCella(Cella cella, int dimensione) {
 		this.dimensione = dimensione;
 		posizione = cella.getPosizione();
 		setLayout(new BorderLayout());
