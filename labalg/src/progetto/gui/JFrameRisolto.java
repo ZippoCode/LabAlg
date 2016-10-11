@@ -30,6 +30,7 @@ public class JFrameRisolto extends JFrame {
 		JPanel contentPanel = new JPanel();
 		setContentPane(contentPanel);
 		setLayout(new FlowLayout());
+		setTitle("Risolto");
 		risolto = new Label("Complimenti hai risolto il gioco, vuoi iniziare una nuova partita?");
 		newPlay = new JButton("SI");
 		newPlay.setName("play");

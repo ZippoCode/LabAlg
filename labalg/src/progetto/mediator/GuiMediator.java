@@ -20,9 +20,12 @@ import progetto.command.IndietroCommand;
 import progetto.command.WriteCommand;
 import progetto.gui.JPanelCella;
 import progetto.gui.JPanelMain;
+import progetto.gui.JFrameComandi;
+import progetto.gui.JFrameContatti;
 import progetto.gui.JFrameIstruzioni;
 import progetto.gui.JFrameRisolto;
 import progetto.gui.JFrameScelta;
+import progetto.gui.JFrameUscita;
 import progetto.state.FSM;
 import progetto.state.State;
 import progetto.template_method.Kenken;
@@ -44,6 +47,7 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 	private final State BUILDER = new BuilderState();
 	private final State GIOCA = new GiocaState();
 	private final State RISOLTO = new RisoltoState();
+	private final State JFRAME = new JFrameState();
 
 	private MediatorAdapter adapter = new MediatorAdapter();
 	private JButton risolvi, reset, avanti, indietro, check, saveState, restoreState, help;
@@ -51,24 +55,22 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 	private JButton play, noplay = null;
 	private JButton introGame, introInfo, introContatti, introEsci;
 	private JRadioButton tre, quattro, cinque, sei, sette, otto, nove;
+	private JButton siExit, noExit = null;
+	private JButton okContatti = null, okComandi = null;
 	private JMenuItem gioca, exit, istruzioni, contatti, comandi;
 	private String dim = null;
-	private JFrameScelta jsf = null;
-	private JFrameRisolto jrf = null;
+	private JFrameScelta jFrameScelta = null;
+	private JFrameRisolto jFrameRisolto = null;
+	private JFrameUscita jFrameUscita = null;
+	private JFrameContatti jFrameContatti = null;
+	private JFrameComandi jFrameComandi = null;
 	private JPanelCella cella;
 	private JPanelMain jPanelMain = null;
-	private boolean grigliaPresente = false;
+	private boolean grigliaPresente = false, flag = false;
 	private Kenken kenken = null;
 	private int dimMappa = -1;
 	private Mappa mappa = null;
 	private HashMap<String, JPanelCella> mappaCelle = new HashMap<>();
-	private String testo = "CLICCARE SU GIOCA E SELEZIONARE LA DIMENSIONE DELLA GRIGLIA,"
-			+ "\nPER SCRIVERE UN NUMERO E' SUFFICIENTIE CLICCARE SULLA POSIZIONE\n"
-			+ "E DIGITARE DA TASTIERA IL NUMERO SCELTO.\nI BOTTONI\nRISOLVI : Visualizza la soluzione\n"
-			+ "RESET : Elimina i numeri scritti\n>> e << : Permettono di navigare sui numeri scritti\n"
-			+ "CHECK : Informa se i numeri scritti sono corretti\n"
-			+ "SAVE e RESTORE : Permetto di salvare e ripristinare lo stato\n"
-			+ "AIUTO : Visualizza un numero in una posizione casuale ";
 
 	public GuiMediator() {
 		transition(START);
@@ -85,12 +87,15 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 	}
 
 	private class StartState extends MediatorState {
-		private int COUNTER = 29;
+		private int COUNTER = 33;
 
 		@Override
 		public void entryState() {
-			jsf = new JFrameScelta(this);
-			jrf = new JFrameRisolto(this);
+			jFrameScelta = new JFrameScelta(this);
+			jFrameRisolto = new JFrameRisolto(this);
+			jFrameUscita = new JFrameUscita(this);
+			jFrameContatti = new JFrameContatti(this);
+			jFrameComandi = new JFrameComandi(this);
 		}
 
 		public void manageEvent(ActionEvent event) {
@@ -223,6 +228,22 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 				introEsci = (JButton) component;
 				introEsci.addActionListener(adapter);
 				break;
+			case "siExit":
+				siExit = (JButton) component;
+				siExit.addActionListener(adapter);
+				break;
+			case "noExit":
+				noExit = (JButton) component;
+				noExit.addActionListener(adapter);
+				break;
+			case "okContatti":
+				okContatti = (JButton) component;
+				okContatti.addActionListener(adapter);
+				break;
+			case "okComandi":
+				okComandi = (JButton) component;
+				okComandi.addActionListener(adapter);
+				break;
 			default:
 				jPanelMain = (JPanelMain) component;
 				break;
@@ -257,12 +278,13 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 				transition(USCITA);
 			else if (nomeEvento.equals("istruzioni") || nomeEvento.equals("introInfo"))
 				new JFrameIstruzioni();
-			else if (nomeEvento.equals("comandi"))
-				JOptionPane.showMessageDialog(null, testo, "Comandi", JOptionPane.INFORMATION_MESSAGE);
-			else if (nomeEvento.equals("contatti") || nomeEvento.equals("introContatti"))
-				JOptionPane.showMessageDialog(null,
-						"Studente: Salvatore Prochilo\nMatricola: 150097\nE-mail: prochilo.salvatore@gmail.com", "Info",
-						JOptionPane.INFORMATION_MESSAGE);
+			else if (nomeEvento.equals("comandi")) {
+				flag = false;
+				transition(JFRAME);
+			} else if (nomeEvento.equals("contatti") || nomeEvento.equals("introContatti")) {
+				flag = true;
+				transition(JFRAME);
+			}
 		}
 	}
 
@@ -270,13 +292,12 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 
 		@Override
 		public void entryState() {
-			jsf.setVisible(true);
+			jFrameScelta.setVisible(true);
 		}
 
 		@Override
 		public void exitState() {
-			jPanelMain.changeFlag();
-			jsf.setVisible(false);
+			jFrameScelta.setVisible(false);
 		}
 
 		@Override
@@ -302,19 +323,6 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 			} else if (name.equals("annulla") && grigliaPresente) {
 				transition(GIOCA);
 			} else if (name.equals("annulla") && !grigliaPresente) {
-				transition(RELAX);
-			}
-		}
-	}
-
-	private class UscitaState extends MediatorState {
-		@Override
-		public void entryState() {
-			int i = JOptionPane.showConfirmDialog(null, "Vuoi uscire?", "SICURO?", JOptionPane.YES_NO_OPTION);
-			if (i == JOptionPane.YES_OPTION) {
-				JOptionPane.showMessageDialog(null, "Premi OK per uscire", "Bye", JOptionPane.CLOSED_OPTION);
-				System.exit(0);
-			} else {
 				transition(RELAX);
 			}
 		}
@@ -362,6 +370,11 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 	private class GiocaState extends MediatorState {
 
 		@Override
+		public void entryState() {
+			jPanelMain.changeFlag();
+		}
+
+		@Override
 		public void manageEvent(ActionEvent event) {
 			switch (((JComponent) event.getSource()).getName()) {
 			case "risolvi":
@@ -391,12 +404,14 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 				restoreState.setEnabled(true);
 				JOptionPane.showMessageDialog(null, "Lo stato è stato salvato", "Conferma",
 						JOptionPane.INFORMATION_MESSAGE);
+				jPanelMain.imbianca();
 				break;
 			case "restoreState":
 				Mappa ripristino = mappa.ripristinaIstanza();
 				jPanelMain.ripristinaStato(ripristino);
 				JOptionPane.showMessageDialog(null, "Lo stato è stato ripristinato", "Conferma",
 						JOptionPane.INFORMATION_MESSAGE);
+				jPanelMain.imbianca();
 				break;
 			case "help":
 				Posizione posizione = mappa.getPosizioneRandom();
@@ -414,15 +429,15 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 				new JFrameIstruzioni();
 				break;
 			case "comandi":
-				JOptionPane.showMessageDialog(null, testo, "Comandi", JOptionPane.INFORMATION_MESSAGE);
+				flag = false;
+				transition(JFRAME);
 				break;
 			case "exit":
 				transition(USCITA);
 				break;
 			case "contatti":
-				JOptionPane.showMessageDialog(null,
-						"Studente: Salvatore Prochilo\nMatricola: 150097\nE-mail: prochilo.salvatore@gmail.com", "Info",
-						JOptionPane.INFORMATION_MESSAGE);
+				flag = true;
+				transition(JFRAME);
 				break;
 			default:
 				if (mappaCelle.containsKey(((JComponent) event.getSource()).getName())) {
@@ -462,23 +477,76 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 			saveState.setEnabled(false);
 			restoreState.setEnabled(false);
 			help.setEnabled(false);
-			jrf.setVisible(true);
+			jFrameRisolto.setVisible(true);
 			grigliaPresente = false;
 		}
 
 		@Override
 		public void exitState() {
-			jrf.setVisible(false);
+			jFrameRisolto.setVisible(false);
 		}
 
 		@Override
 		public void manageEvent(ActionEvent event) {
 			if (((JComponent) event.getSource()).getName().equals("play")) {
-				jrf.setVisible(false);
+				jFrameRisolto.setVisible(false);
 				transition(SCELTA);
 			} else if (((JComponent) event.getSource()).getName().equals("noplay"))
 				transition(USCITA);
 		}
+	}
+
+	private class UscitaState extends MediatorState {
+		@Override
+		public void entryState() {
+			jFrameUscita.setVisible(true);
+		}
+
+		@Override
+		public void exitState() {
+			jFrameUscita.setVisible(false);
+		}
+
+		@Override
+		public void manageEvent(ActionEvent event) {
+			String name = ((JComponent) event.getSource()).getName();
+			if (name.equals("siExit")) {
+				jFrameUscita.messaggioDiUscita();
+			} else if (name.equals("noExit") && grigliaPresente) {
+				transition(GIOCA);
+			} else if (name.equals("noExit") && !grigliaPresente) {
+				transition(RELAX);
+			}
+		}
+	}
+
+	private class JFrameState extends MediatorState {
+		@Override
+		public void entryState() {
+			if (flag)
+				jFrameContatti.setVisible(true);
+			else
+				jFrameComandi.setVisible(true);
+		}
+
+		@Override
+		public void exitState() {
+			if (flag)
+				jFrameContatti.setVisible(false);
+			else
+				jFrameComandi.setVisible(false);
+		}
+
+		@Override
+		public void manageEvent(ActionEvent event) {
+			String name = ((JComponent) event.getSource()).getName();
+			if ((name.equals("okContatti") || name.endsWith("okComandi")) && grigliaPresente) {
+				transition(GIOCA);
+			} else if ((name.equals("okContatti") || name.endsWith("okComandi")) && !grigliaPresente) {
+				transition(RELAX);
+			}
+		}
+
 	}
 
 	private class MediatorAdapter implements ActionListener {

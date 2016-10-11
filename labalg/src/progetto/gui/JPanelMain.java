@@ -160,9 +160,21 @@ public class JPanelMain extends JPanel {
 		}
 	}
 
-	public void restart() {
+	/**
+	 * Colora tutte le celle di bianco
+	 */
+	public void imbianca() {
 		for (JPanelCella jc : getListaJCelle()) {
 			jc.setBackground(Color.WHITE);
+		}
+	}
+
+	/**
+	 * Elimina dalla schermata tutti i numeri inseriti
+	 */
+	public void restart() {
+		imbianca();
+		for (JPanelCella jc : getListaJCelle()) {
 			jc.setText(" ");
 		}
 	}

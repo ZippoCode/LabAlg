@@ -48,5 +48,5 @@ public class Gui extends JFrame {
 		setResizable(false);
 		setVisible(true);
 	}
-	
+
 }

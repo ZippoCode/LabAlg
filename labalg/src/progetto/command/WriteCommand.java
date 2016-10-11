@@ -1,5 +1,7 @@
 package progetto.command;
 
+import java.awt.Color;
+
 import progetto.builder.Mappa;
 import progetto.gui.JPanelCella;
 import progetto.gui.JPanelMain;
@@ -22,6 +24,7 @@ public class WriteCommand extends AbstractCommand {
 
 	public WriteCommand(JPanelCella testo, String value, Mappa mappa, JPanelMain jgp) {
 		jGrigliaPanel = jgp;
+		testo.setBackground(Color.WHITE);
 		this.mappa = mappa;
 		oldValue = testo.getText();
 		if (oldValue.equals(value))
@@ -35,6 +38,7 @@ public class WriteCommand extends AbstractCommand {
 	public boolean doIt() {
 		testo.setText(newValue);
 		mappa.write(Integer.parseInt(newValue), testo.getPosizione());
+		testo.setBackground(Color.WHITE);
 		return true;
 	}
 
