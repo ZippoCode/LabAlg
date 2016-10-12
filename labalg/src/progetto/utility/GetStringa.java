@@ -47,4 +47,8 @@ public class GetStringa {
 		return "file/" + numero + "x" + numero + "_" + String.valueOf(posizione);
 	}
 
+	public static String getStringaIcona(int numero, int posizione) {
+		return numero + "x" + numero + "_" + String.valueOf(posizione);
+	}
+
 }

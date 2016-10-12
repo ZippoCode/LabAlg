@@ -333,8 +333,6 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 		public void exitState() {
 			jFrameSceltaNumero.setVisible(false);
 			jFrameSceltaGriglia.setVisible(false);
-			dimMappa = Integer.parseInt(
-					grigliaSelezionata.substring(grigliaSelezionata.length() - 3, grigliaSelezionata.length() - 2));
 		}
 
 		@Override
@@ -357,6 +355,8 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 					dim = "9";
 				}
 				grigliaSelezionata = GetStringa.getName(Integer.parseInt(dim));
+				dimMappa = Integer.parseInt(
+						grigliaSelezionata.substring(grigliaSelezionata.length() - 3, grigliaSelezionata.length() - 2));
 				transition(BUILDER);
 			} else if (name.equals("annulla") && grigliaPresente) {
 				transition(GIOCA);
@@ -364,6 +364,8 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 				transition(RELAX);
 			} else if (listaSceltaGriglia.contains(name)) {
 				grigliaSelezionata = name;
+				dimMappa = Integer.parseInt(
+						grigliaSelezionata.substring(grigliaSelezionata.length() - 3, grigliaSelezionata.length() - 2));
 				transition(BUILDER);
 			}
 		}
