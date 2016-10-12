@@ -30,6 +30,7 @@ public class JPanelMenu extends JMenuBar {
 	private JMenu help = null;
 	private JMenu info = null;
 	private JMenuItem play = null;
+	private JMenuItem playRandom = null;
 	private JMenuItem exit = null;
 	private JMenuItem istruzioni = null;
 	private JMenuItem contatti = null;
@@ -57,10 +58,14 @@ public class JPanelMenu extends JMenuBar {
 		play = new JMenuItem("Selezione griglia");
 		play.setName("gioca");
 		play.setFont(f);
+		playRandom = new JMenuItem("Selezione griglia casuale");
+		playRandom.setName("giocaRandom");
+		playRandom.setFont(f);
 		exit = new JMenuItem("Exit");
 		exit.setName("exit");
 		exit.setFont(f);
 		nuovo.add(play);
+		nuovo.add(playRandom);
 		nuovo.addSeparator();
 		nuovo.add(exit);
 		istruzioni = new JMenuItem("Istruzioni");
@@ -77,6 +82,7 @@ public class JPanelMenu extends JMenuBar {
 		add(help);
 		add(info);
 		mediator.manageEvent(new ActionEvent(play, Counter.generateID(), null));
+		mediator.manageEvent(new ActionEvent(playRandom, Counter.generateID(), null));
 		mediator.manageEvent(new ActionEvent(exit, Counter.generateID(), null));
 		mediator.manageEvent(new ActionEvent(istruzioni, Counter.generateID(), null));
 		mediator.manageEvent(new ActionEvent(contatti, Counter.generateID(), null));

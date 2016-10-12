@@ -42,7 +42,7 @@ import progetto.utility.Posizione;
 
 public class JPanelMain extends JPanel {
 	private static final long serialVersionUID = 1L;
-	private JButton introGame, introInfo, introContatti, introEsci;
+	private JButton introGame, introGameRandom, introInfo, introContatti, introComandi, introEsci;
 	private GridBagLayout gbl = null;
 	private GridBagConstraints gbc = null;
 	private HashMap<Posizione, JPanelCella> hashMapJCella = null;
@@ -51,6 +51,7 @@ public class JPanelMain extends JPanel {
 
 	public JPanelMain(Mediator mediator) {
 		this.mediator = mediator;
+		setName("jPanelMain");
 		creaJPanelIntro();
 	}
 
@@ -62,8 +63,10 @@ public class JPanelMain extends JPanel {
 		revalidate();
 		repaint();
 		settaBottone(introGame, "introGame", mediator);
+		settaBottone(introGameRandom, "introGameRandom", mediator);
 		settaBottone(introInfo, "introInfo", mediator);
 		settaBottone(introContatti, "introContatti", mediator);
+		settaBottone(introComandi, "introComandi", mediator);
 		settaBottone(introEsci, "introEsci", mediator);
 	}
 
@@ -73,7 +76,7 @@ public class JPanelMain extends JPanel {
 		bottone.setName(nome);
 		bottone.setEnabled(true);
 		bottone.setBackground(Color.WHITE);
-		bottone.setFont(new Font("Ariel", Font.CENTER_BASELINE, 30));
+		bottone.setFont(new Font("Ariel", Font.CENTER_BASELINE, 15));
 		add(bottone);
 		mediator.manageEvent(new ActionEvent(bottone, Counter.generateID(), null));
 	}

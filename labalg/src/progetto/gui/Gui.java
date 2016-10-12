@@ -32,8 +32,8 @@ public class Gui extends JFrame {
 	public void avviaGui() {
 		setJMenuBar(new JPanelMenu(mediator));
 		jpg = new JPanelMain(mediator);
-		jpg.setName("jPanelGriglia");
 		jpc = new JPanelComandi(mediator);
+		
 		mediator.manageEvent(new ActionEvent(jpg, Counter.generateID(), null));
 		layout = new BorderLayout();
 		setLayout(layout);

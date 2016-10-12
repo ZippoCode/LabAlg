@@ -24,7 +24,7 @@ public class JFrameRisolto extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private Label risolto = null;
-	private JButton newPlay, noNewPlay = null;
+	private JButton newPlay, newPlayRandom, noNewPlay = null;
 
 	public JFrameRisolto(Mediator mediator) {
 		JPanel contentPanel = new JPanel();
@@ -32,14 +32,18 @@ public class JFrameRisolto extends JFrame {
 		setLayout(new FlowLayout());
 		setTitle("Risolto");
 		risolto = new Label("Complimenti hai risolto il gioco, vuoi iniziare una nuova partita?");
-		newPlay = new JButton("SI");
+		newPlay = new JButton("Scegli Griglia");
 		newPlay.setName("play");
 		mediator.manageEvent(new ActionEvent(newPlay, Counter.generateID(), null));
+		newPlayRandom = new JButton("Sceglia Griglia Casuale");
+		newPlayRandom.setName("playRandom");
+		mediator.manageEvent(new ActionEvent(newPlayRandom, Counter.generateID(), null));
 		noNewPlay = new JButton("NO");
 		noNewPlay.setName("noplay");
 		mediator.manageEvent(new ActionEvent(noNewPlay, Counter.generateID(), null));
 		contentPanel.add(risolto);
 		contentPanel.add(newPlay);
+		contentPanel.add(newPlayRandom);
 		contentPanel.add(noNewPlay);
 		contentPanel.setBackground(Color.WHITE);
 		pack();

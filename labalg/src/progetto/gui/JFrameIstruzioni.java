@@ -24,7 +24,7 @@ import javax.swing.JTextArea;
  * gioco del Kenken.
  * 
  * @author Salvatore
- * @version 1.0.6
+ * @version 1.1
  */
 public class JFrameIstruzioni extends JFrame {
 	private static final long serialVersionUID = -2878373186759475971L;
@@ -33,7 +33,7 @@ public class JFrameIstruzioni extends JFrame {
 	private JButton esci = null;
 	private JPanel pannelloTesto = null;
 	private JPanel pannelloBottone = null;
-	private int dimL = 300, dimW = 400;
+	private int dimL = 430, dimW = 430;
 	private Dimension dim = null;
 
 	public JFrameIstruzioni() {
@@ -51,7 +51,7 @@ public class JFrameIstruzioni extends JFrame {
 		testo.setEditable(false);
 		testo.setName("testo");
 		testo.setBackground(Color.WHITE);
-		testo.setFont(new Font("Ariel", Font.ROMAN_BASELINE, 15));
+		testo.setFont(new Font("Ariel", Font.PLAIN, 15));
 		try {
 			InputStream in = this.getClass().getClassLoader().getResourceAsStream("info/Istruzioni");
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));

@@ -17,7 +17,7 @@ import progetto.utility.Counter;
  * @author Salvatore Prochilo
  * @version 1.2
  */
-public class JFrameScelta extends JFrame {
+public class JFrameSceltaNumero extends JFrame {
 	private static final long serialVersionUID = -6076695279750416625L;
 	private JRadioButton tre, quattro, cinque, sei, sette, otto, nove;
 	private JPanel pannello = null;
@@ -25,7 +25,7 @@ public class JFrameScelta extends JFrame {
 	private JButton conferma = null;
 	private JButton annulla = null;
 
-	public JFrameScelta(Mediator mediator) {
+	public JFrameSceltaNumero(Mediator mediator) {
 		setName("jsceltaframe");
 		pannello = new JPanel();
 		pannello.setLayout(new FlowLayout());

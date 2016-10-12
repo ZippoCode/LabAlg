@@ -9,7 +9,8 @@ import java.util.Random;
  */
 public class GetStringa {
 
-	private static int numTre = 5, numQuattro = 2, numCinque = 5, numSei = 4, numSette = 1, numOtto = 1, numNove = 2;
+	public static final int numTre = 5, numQuattro = 2, numCinque = 5, numSei = 4, numSette = 1, numOtto = 1,
+			numNove = 2;
 	private static int val = 0;
 	private static Random random = new Random();
 
@@ -40,6 +41,10 @@ public class GetStringa {
 		String dim = String.valueOf(dimensione);
 		String name = "file/" + dim + "x" + dim + "_" + String.valueOf(val);
 		return name;
+	}
+
+	public static String getStringa(int numero, int posizione) {
+		return "file/" + numero + "x" + numero + "_" + String.valueOf(posizione);
 	}
 
 }

@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -24,7 +25,8 @@ import progetto.gui.JFrameComandi;
 import progetto.gui.JFrameContatti;
 import progetto.gui.JFrameIstruzioni;
 import progetto.gui.JFrameRisolto;
-import progetto.gui.JFrameScelta;
+import progetto.gui.JFrameSceltaGriglia;
+import progetto.gui.JFrameSceltaNumero;
 import progetto.gui.JFrameUscita;
 import progetto.state.FSM;
 import progetto.state.State;
@@ -52,25 +54,28 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 	private MediatorAdapter adapter = new MediatorAdapter();
 	private JButton risolvi, reset, avanti, indietro, check, saveState, restoreState, help;
 	private JButton conferma, annulla;
-	private JButton play, noplay = null;
-	private JButton introGame, introInfo, introContatti, introEsci;
+	private JButton play, playRandom, noplay = null;
+	private JButton introGame, introGameRandom, introInfo, introContatti, introComandi, introEsci;
 	private JRadioButton tre, quattro, cinque, sei, sette, otto, nove;
 	private JButton siExit, noExit = null;
 	private JButton okContatti = null, okComandi = null;
-	private JMenuItem gioca, exit, istruzioni, contatti, comandi;
+	private JMenuItem gioca, giocaRandom, exit, istruzioni, contatti, comandi;
 	private String dim = null;
-	private JFrameScelta jFrameScelta = null;
+	private String grigliaSelezionata = null;
+	private JFrameSceltaNumero jFrameSceltaNumero = null;
 	private JFrameRisolto jFrameRisolto = null;
 	private JFrameUscita jFrameUscita = null;
 	private JFrameContatti jFrameContatti = null;
 	private JFrameComandi jFrameComandi = null;
+	private JFrameSceltaGriglia jFrameSceltaGriglia = null;
 	private JPanelCella cella;
 	private JPanelMain jPanelMain = null;
-	private boolean grigliaPresente = false, flag = false;
+	private boolean grigliaPresente = false, flag = false, random = false;
 	private Kenken kenken = null;
 	private int dimMappa = -1;
 	private Mappa mappa = null;
 	private HashMap<String, JPanelCella> mappaCelle = new HashMap<>();
+	private LinkedList<String> listaSceltaGriglia = new LinkedList<>();
 
 	public GuiMediator() {
 		transition(START);
@@ -87,15 +92,16 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 	}
 
 	private class StartState extends MediatorState {
-		private int COUNTER = 33;
+		private int COUNTER = 57;
 
 		@Override
 		public void entryState() {
-			jFrameScelta = new JFrameScelta(this);
+			jFrameSceltaNumero = new JFrameSceltaNumero(this);
 			jFrameRisolto = new JFrameRisolto(this);
 			jFrameUscita = new JFrameUscita(this);
 			jFrameContatti = new JFrameContatti(this);
 			jFrameComandi = new JFrameComandi(this);
+			jFrameSceltaGriglia = new JFrameSceltaGriglia(this);
 		}
 
 		public void manageEvent(ActionEvent event) {
@@ -145,6 +151,10 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 			case "gioca":
 				gioca = (JMenuItem) component;
 				gioca.addActionListener(adapter);
+				break;
+			case "giocaRandom":
+				giocaRandom = (JMenuItem) component;
+				giocaRandom.addActionListener(adapter);
 				break;
 			case "exit":
 				exit = (JMenuItem) component;
@@ -208,6 +218,10 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 				play = (JButton) component;
 				play.addActionListener(adapter);
 				break;
+			case "playRandom":
+				playRandom = (JButton) component;
+				playRandom.addActionListener(adapter);
+				break;
 			case "noplay":
 				noplay = (JButton) component;
 				noplay.addActionListener(adapter);
@@ -216,6 +230,10 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 				introGame = (JButton) component;
 				introGame.addActionListener(adapter);
 				break;
+			case "introGameRandom":
+				introGameRandom = (JButton) component;
+				introGameRandom.addActionListener(adapter);
+				break;
 			case "introInfo":
 				introInfo = (JButton) component;
 				introInfo.addActionListener(adapter);
@@ -223,6 +241,10 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 			case "introContatti":
 				introContatti = (JButton) component;
 				introContatti.addActionListener(adapter);
+				break;
+			case "introComandi":
+				introComandi = (JButton) component;
+				introComandi.addActionListener(adapter);
 				break;
 			case "introEsci":
 				introEsci = (JButton) component;
@@ -244,8 +266,13 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 				okComandi = (JButton) component;
 				okComandi.addActionListener(adapter);
 				break;
-			default:
+			case "jPanelMain":
 				jPanelMain = (JPanelMain) component;
+				break;
+			default:
+				JButton button = (JButton) component;
+				button.addActionListener(adapter);
+				listaSceltaGriglia.add(button.getName());
 				break;
 			}
 			COUNTER--;
@@ -272,13 +299,17 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 		@Override
 		public void manageEvent(ActionEvent event) {
 			String nomeEvento = ((JComponent) event.getSource()).getName();
-			if (nomeEvento.equals("gioca") || nomeEvento.equals("introGame"))
+			if (nomeEvento.equals("gioca") || nomeEvento.equals("introGame")) {
+				random = false;
 				transition(SCELTA);
-			else if (nomeEvento.equals("exit") || nomeEvento.equals("introEsci"))
+			} else if (nomeEvento.equals("giocaRandom") || nomeEvento.equals("introGameRandom")) {
+				random = true;
+				transition(SCELTA);
+			} else if (nomeEvento.equals("exit") || nomeEvento.equals("introEsci"))
 				transition(USCITA);
 			else if (nomeEvento.equals("istruzioni") || nomeEvento.equals("introInfo"))
 				new JFrameIstruzioni();
-			else if (nomeEvento.equals("comandi")) {
+			else if (nomeEvento.equals("comandi") || nomeEvento.equals("introComandi")) {
 				flag = false;
 				transition(JFRAME);
 			} else if (nomeEvento.equals("contatti") || nomeEvento.equals("introContatti")) {
@@ -292,12 +323,18 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 
 		@Override
 		public void entryState() {
-			jFrameScelta.setVisible(true);
+			if (random)
+				jFrameSceltaNumero.setVisible(true);
+			else
+				jFrameSceltaGriglia.setVisible(true);
 		}
 
 		@Override
 		public void exitState() {
-			jFrameScelta.setVisible(false);
+			jFrameSceltaNumero.setVisible(false);
+			jFrameSceltaGriglia.setVisible(false);
+			dimMappa = Integer.parseInt(
+					grigliaSelezionata.substring(grigliaSelezionata.length() - 3, grigliaSelezionata.length() - 2));
 		}
 
 		@Override
@@ -319,11 +356,15 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 				} else if (nove.isSelected()) {
 					dim = "9";
 				}
+				grigliaSelezionata = GetStringa.getName(Integer.parseInt(dim));
 				transition(BUILDER);
 			} else if (name.equals("annulla") && grigliaPresente) {
 				transition(GIOCA);
 			} else if (name.equals("annulla") && !grigliaPresente) {
 				transition(RELAX);
+			} else if (listaSceltaGriglia.contains(name)) {
+				grigliaSelezionata = name;
+				transition(BUILDER);
 			}
 		}
 	}
@@ -331,16 +372,15 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 	private class BuilderState extends MediatorState {
 		@Override
 		public void entryState() {
-			String nome = GetStringa.getName(Integer.parseInt(dim));
-			GestoreTesto gt = new GestoreTesto(nome);
+			GestoreTesto gt = new GestoreTesto(grigliaSelezionata);
 			BuilderMappa bm = new BuilderMappa();
 			Director dir = new Director(bm);
 			dir.buildInsiemeBlocchi(gt);
-			dir.creaGriglia(Integer.parseInt(dim));
+			dir.creaGriglia(dimMappa);
 			mappa = bm.getMappa();
 			dimMappa = mappa.getDimensioneMappa();
 			kenken = new Kenken(mappa);
-			jPanelMain.settaBordo(nome);
+			jPanelMain.settaBordo(grigliaSelezionata);
 			jPanelMain.creaJPanelGriglia(mappa.getInsiemeBlocchi(), dimMappa);
 			run();
 			transition(GIOCA);
@@ -423,6 +463,11 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 				}
 				break;
 			case "gioca":
+				random = false;
+				transition(SCELTA);
+				break;
+			case "giocaRandom":
+				random = true;
 				transition(SCELTA);
 				break;
 			case "istruzioni":
@@ -490,6 +535,10 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 		public void manageEvent(ActionEvent event) {
 			if (((JComponent) event.getSource()).getName().equals("play")) {
 				jFrameRisolto.setVisible(false);
+				random = false;
+				transition(SCELTA);
+			} else if (((JComponent) event.getSource()).getName().equals("playRandom")) {
+				random = true;
 				transition(SCELTA);
 			} else if (((JComponent) event.getSource()).getName().equals("noplay"))
 				transition(USCITA);
