@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Paths;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -61,8 +63,10 @@ public class JFrameSceltaGriglia extends JFrame {
 		JButton[] v = new JButton[numero];
 		for (int i = 0; i < v.length; i++) {
 			try {
-				Image background = ImageIO.read(new File("C:/Users/proch/git/Local_labalg/labalg/src/icon/"
-						+ GetStringa.getStringaIcona(dimensione, i + 1) + ".jpg"));
+				String stringa = GetStringa.getStringaIcona(dimensione, i+1)+".jpg";
+				URL url = this.getClass().getResource(stringa);
+				System.out.println(url.toString());
+				Image background = ImageIO.read(new File("ciao mamma"));
 				Image resizeBackground = background.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 				ImageIcon icona = new ImageIcon(resizeBackground);
 				pannello.add(new JLabel(icona));
