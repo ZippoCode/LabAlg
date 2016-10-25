@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -62,9 +62,9 @@ public class JFrameSceltaGriglia extends JFrame {
 		JButton[] v = new JButton[numero];
 		for (int i = 0; i < v.length; i++) {
 			try {
-				String stringa = "/icon/" + GetStringa.getStringaIcona(dimensione, i + 1) + ".jpg";
-				URL url = this.getClass().getResource(stringa);
-				BufferedImage background = ImageIO.read(url);
+				String stringa = "icon/" + GetStringa.getStringaIcona(dimensione, i + 1) + ".jpg";
+				InputStream input = getClass().getClassLoader().getResourceAsStream(stringa);
+				BufferedImage background = ImageIO.read(input);
 				Image resizeBackground = background.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 				ImageIcon icona = new ImageIcon(resizeBackground);
 				pannello.add(new JLabel(icona));

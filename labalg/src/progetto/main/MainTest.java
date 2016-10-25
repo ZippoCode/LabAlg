@@ -11,8 +11,10 @@ import progetto.utility.GetStringa;
 
 public class MainTest {
 
+	private static Scanner sc;
+
 	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
+		sc = new Scanner(System.in);
 		System.out.print("Scrivi la dimensione >>");
 		String dim = sc.nextLine();
 		String nome = GetStringa.getName(Integer.parseInt(dim));
