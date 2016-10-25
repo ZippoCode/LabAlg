@@ -4,11 +4,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -62,9 +62,8 @@ public class JFrameSceltaGriglia extends JFrame {
 		JButton[] v = new JButton[numero];
 		for (int i = 0; i < v.length; i++) {
 			try {
-				String stringa = "icon/" + GetStringa.getStringaIcona(dimensione, i + 1) + ".jpg";
-				InputStream input = getClass().getClassLoader().getResourceAsStream(stringa);
-				BufferedImage background = ImageIO.read(input);
+				String stringa = GetStringa.getStringaIcona(dimensione, i + 1);
+				Image background = Toolkit.getDefaultToolkit().getImage(getClass().getResource(stringa));
 				Image resizeBackground = background.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 				ImageIcon icona = new ImageIcon(resizeBackground);
 				pannello.add(new JLabel(icona));
@@ -73,8 +72,9 @@ public class JFrameSceltaGriglia extends JFrame {
 				v[i].setName(GetStringa.getStringa(dimensione, i + 1));
 				mediator.manageEvent(new ActionEvent(v[i], Counter.generateID(), null));
 				pannello.add(v[i]);
-			} catch (IOException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
+				System.exit(-1);
 			}
 
 		}

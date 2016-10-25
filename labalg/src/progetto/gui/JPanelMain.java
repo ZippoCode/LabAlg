@@ -7,7 +7,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
@@ -87,7 +86,7 @@ public class JPanelMain extends JPanel {
 		if (!mappaSelezionata) {
 			BufferedImage background;
 			try {
-				background = ImageIO.read(new File("C:/Users/proch/git/Local_labalg/labalg/src/info/background.jpg"));
+				background = ImageIO.read(getClass().getClassLoader().getResource("info/background.jpg"));
 				g.drawImage(background, 0, 0, null);
 			} catch (IOException e) {
 				e.printStackTrace();

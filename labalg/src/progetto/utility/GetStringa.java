@@ -38,9 +38,7 @@ public class GetStringa {
 			val = random.nextInt(numNove) + 1;
 			break;
 		}
-		String dim = String.valueOf(dimensione);
-		String name = "file/" + dim + "x" + dim + "_" + String.valueOf(val);
-		return name;
+		return getStringa(dimensione, val);
 	}
 
 	public static String getStringa(int numero, int posizione) {
@@ -48,7 +46,7 @@ public class GetStringa {
 	}
 
 	public static String getStringaIcona(int numero, int posizione) {
-		return numero + "x" + numero + "_" + String.valueOf(posizione);
+		return "/icon/" + numero + "x" + numero + "_" + String.valueOf(posizione) + ".jpg";
 	}
 
 }
