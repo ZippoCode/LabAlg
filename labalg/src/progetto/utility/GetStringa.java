@@ -46,7 +46,7 @@ public class GetStringa {
 	}
 
 	public static String getStringaIcona(int numero, int posizione) {
-		return "/icon/" + numero + "x" + numero + "_" + String.valueOf(posizione) + ".jpg";
+		return numero + "x" + numero + "_" + String.valueOf(posizione) + ".jpg";
 	}
 
 }
