@@ -60,8 +60,8 @@ public class JFrameSceltaGriglia extends JFrame {
 		JButton[] v = new JButton[numero];
 		for (int i = 0; i < v.length; i++) {
 			try {
-				BufferedImage background = ImageIO
-						.read(getClass().getClassLoader().getResource(GetStringa.getStringaIcona(dimensione, i + 1)));
+				String stringa = GetStringa.getStringaIcona(dimensione, i + 1);
+				BufferedImage background = ImageIO.read(getClass().getClassLoader().getResource(stringa));
 				Image resizeBackground = background.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 				ImageIcon icona = new ImageIcon(resizeBackground);
 				pannello.add(new JLabel(icona));
