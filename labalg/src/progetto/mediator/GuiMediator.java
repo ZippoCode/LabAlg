@@ -38,7 +38,7 @@ import progetto.utility.Posizione;
 /**
  * 
  * @author Salvatore
- * @version 2.0.0
+ * @version 3.0
  */
 public class GuiMediator extends FSM implements Mediator, Runnable {
 
@@ -87,7 +87,26 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 	}
 
 	private class MediatorState extends State implements Mediator {
+
 		public void manageEvent(ActionEvent event) {
+			String nomeEvento = ((JComponent) event.getSource()).getName();
+			if (nomeEvento.equals("gioca") || nomeEvento.equals("introGame")) {
+				random = false;
+				transition(SCELTA);
+			} else if (nomeEvento.equals("giocaRandom") || nomeEvento.equals("introGameRandom")) {
+				random = true;
+				transition(SCELTA);
+			} else if (nomeEvento.equals("exit") || nomeEvento.equals("introEsci"))
+				transition(USCITA);
+			else if (nomeEvento.equals("istruzioni") || nomeEvento.equals("introInfo"))
+				new JFrameIstruzioni();
+			else if (nomeEvento.equals("comandi") || nomeEvento.equals("introComandi")) {
+				flag = false;
+				transition(JFRAME);
+			} else if (nomeEvento.equals("contatti") || nomeEvento.equals("introContatti")) {
+				flag = true;
+				transition(JFRAME);
+			}
 		}
 	}
 
@@ -280,6 +299,7 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 				transition(RELAX);
 			}
 		}
+
 	}
 
 	private class RelaxState extends MediatorState {
@@ -298,24 +318,7 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 
 		@Override
 		public void manageEvent(ActionEvent event) {
-			String nomeEvento = ((JComponent) event.getSource()).getName();
-			if (nomeEvento.equals("gioca") || nomeEvento.equals("introGame")) {
-				random = false;
-				transition(SCELTA);
-			} else if (nomeEvento.equals("giocaRandom") || nomeEvento.equals("introGameRandom")) {
-				random = true;
-				transition(SCELTA);
-			} else if (nomeEvento.equals("exit") || nomeEvento.equals("introEsci"))
-				transition(USCITA);
-			else if (nomeEvento.equals("istruzioni") || nomeEvento.equals("introInfo"))
-				new JFrameIstruzioni();
-			else if (nomeEvento.equals("comandi") || nomeEvento.equals("introComandi")) {
-				flag = false;
-				transition(JFRAME);
-			} else if (nomeEvento.equals("contatti") || nomeEvento.equals("introContatti")) {
-				flag = true;
-				transition(JFRAME);
-			}
+			super.manageEvent(event);
 		}
 	}
 
@@ -367,6 +370,8 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 				dimMappa = Integer.parseInt(
 						grigliaSelezionata.substring(grigliaSelezionata.length() - 3, grigliaSelezionata.length() - 2));
 				transition(BUILDER);
+			} else {
+				super.manageEvent(event);
 			}
 		}
 	}
@@ -544,6 +549,8 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 				transition(SCELTA);
 			} else if (((JComponent) event.getSource()).getName().equals("noplay"))
 				transition(USCITA);
+			else
+				super.manageEvent(event);
 		}
 	}
 
@@ -567,7 +574,8 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 				transition(GIOCA);
 			} else if (name.equals("noExit") && !grigliaPresente) {
 				transition(RELAX);
-			}
+			} else
+				super.manageEvent(event);
 		}
 	}
 
@@ -582,10 +590,8 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 
 		@Override
 		public void exitState() {
-			if (flag)
-				jFrameContatti.setVisible(false);
-			else
-				jFrameComandi.setVisible(false);
+			jFrameContatti.setVisible(false);
+			jFrameComandi.setVisible(false);
 		}
 
 		@Override
@@ -595,7 +601,8 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 				transition(GIOCA);
 			} else if ((name.equals("okContatti") || name.endsWith("okComandi")) && !grigliaPresente) {
 				transition(RELAX);
-			}
+			} else
+				super.manageEvent(event);
 		}
 
 	}

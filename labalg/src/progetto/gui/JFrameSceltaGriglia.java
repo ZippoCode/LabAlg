@@ -6,10 +6,9 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.File;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Paths;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -63,10 +62,9 @@ public class JFrameSceltaGriglia extends JFrame {
 		JButton[] v = new JButton[numero];
 		for (int i = 0; i < v.length; i++) {
 			try {
-				String stringa = GetStringa.getStringaIcona(dimensione, i+1)+".jpg";
+				String stringa = "/icon/" + GetStringa.getStringaIcona(dimensione, i + 1) + ".jpg";
 				URL url = this.getClass().getResource(stringa);
-				System.out.println(url.toString());
-				Image background = ImageIO.read(new File("ciao mamma"));
+				BufferedImage background = ImageIO.read(url);
 				Image resizeBackground = background.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 				ImageIcon icona = new ImageIcon(resizeBackground);
 				pannello.add(new JLabel(icona));
@@ -76,7 +74,6 @@ public class JFrameSceltaGriglia extends JFrame {
 				mediator.manageEvent(new ActionEvent(v[i], Counter.generateID(), null));
 				pannello.add(v[i]);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 

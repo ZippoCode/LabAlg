@@ -39,12 +39,12 @@ public class JFrameSceltaNumero extends JFrame {
 		settaggioJRB(nove, "9", mediator);
 		settaggioJB(conferma, "conferma", mediator);
 		settaggioJB(annulla, "annulla", mediator);
-
+		
 		add(pannello);
 		pack();
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setTitle("Scegli dimensione");
 		setResizable(false);
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setAlwaysOnTop(true);
 		setSize(300, 100);
 		setLocation(600, 300);

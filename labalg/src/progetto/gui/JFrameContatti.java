@@ -1,10 +1,9 @@
 package progetto.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,31 +22,37 @@ public class JFrameContatti extends JFrame {
 	private String textName = "Studente: Salvatore Prochilo";
 	private String textMatricola = "Matricola: 150097";
 	private String textEmail = "E-Mail: prochilo.salvatore@gmail.com";
+	private int posX = 600, posY = 200 , vStruct = 5;
 	private JPanel contentPanel;
 
 	public JFrameContatti(Mediator mediator) {
 		contentPanel = new JPanel();
-		setContentPane(contentPanel);
-		setLayout(new FlowLayout());
-		setTitle("Contatti");
+		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+		
+		ok = new JButton("OK");
+		ok.setName("okContatti");
+		ok.setAlignmentX(CENTER_ALIGNMENT);
+		mediator.manageEvent(new ActionEvent(ok, Counter.generateID(), null));
+
 		impostaLabel(nome, textName);
 		impostaLabel(matricola, textMatricola);
 		impostaLabel(email, textEmail);
-		ok = new JButton("OK");
-		ok.setName("okContatti");
 		contentPanel.add(ok);
-		mediator.manageEvent(new ActionEvent(ok, Counter.generateID(), null));
+
+		add(contentPanel);
 		pack();
+		setTitle("Contatti");
+		setLocation(posX, posY);
 		setResizable(false);
-		setSize(new Dimension(400, 200));
 		setAlwaysOnTop(true);
-		setLocation(500, 200);
 		setVisible(false);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 	}
 
 	private void impostaLabel(JLabel label, String testo) {
 		label = new JLabel(testo);
-		contentPanel.add(label, BorderLayout.CENTER);
+		label.setAlignmentX(CENTER_ALIGNMENT);
+		contentPanel.add(label);
+		contentPanel.add(Box.createVerticalStrut(vStruct));
 	}
 }
