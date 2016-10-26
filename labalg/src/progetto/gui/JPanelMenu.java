@@ -38,7 +38,7 @@ public class JPanelMenu extends JMenuBar {
 	private JMenuItem contatti = null;
 	private JMenuItem comandi = null;
 
-	public JPanelMenu(Mediator mediator) {
+	public JPanelMenu(Mediator mediator, Dimension dimension) {
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		Font f = new Font("Ariel", Font.BOLD, dim.height/50);
 		setBackground(Color.decode("#01579B"));

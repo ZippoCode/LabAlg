@@ -26,27 +26,27 @@ public class Gui extends JFrame {
 	private JPanelMain jpg = null;
 	private JPanelComandi jpc = null;
 	private Mediator mediator = null;
-	private Dimension dimensione = null;
+	private int dimWidth, dimHeigth;
 
 	public Gui() {
 		mediator = new GuiMediator();
 	}
 
 	public void avviaGui() {
-		setJMenuBar(new JPanelMenu(mediator));
-		jpg = new JPanelMain(mediator);
-		jpc = new JPanelComandi(mediator);
-
+		setTitle("Kenken");
+		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+		dimWidth = dimension.width / 2 - dimension.width / 23;
+		dimHeigth = dimension.height - dimension.height / 7;
+		dimension.setSize(dimWidth, dimHeigth);
+		setJMenuBar(new JPanelMenu(mediator, dimension));
+		jpg = new JPanelMain(mediator, dimension);
+		jpc = new JPanelComandi(mediator, dimension);
 		mediator.manageEvent(new ActionEvent(jpg, Counter.generateID(), null));
 		layout = new BorderLayout();
 		setLayout(layout);
-		// Aggiunta Pannelli
 		add(jpc, BorderLayout.SOUTH);
 		add(jpg, BorderLayout.CENTER);
-
-		setTitle("Kenken");
-		dimensione = Toolkit.getDefaultToolkit().getScreenSize();
-		setSize(dimensione.width-800, dimensione.height-120);
+		setSize(dimension);
 		setLocationRelativeTo(null);
 		setResizable(false);
 		setVisible(true);

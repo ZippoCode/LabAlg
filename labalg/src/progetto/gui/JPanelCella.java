@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Toolkit;
 import java.util.Iterator;
 
 import javax.swing.BorderFactory;
@@ -29,19 +28,23 @@ public class JPanelCella extends JButton {
 	private Font fontCella = null, fontOR = null;
 	private JLabel label = null;
 	private Posizione posizione = null;
-	private Dimension dimension = null;
 	private int dimensione = 0;
 	private boolean modificabile = true;
+	public int fattoreScala = -1;
 
-	public JPanelCella(Cella cella, int dimensione) {
+	public JPanelCella(Cella cella, int dimensione, Dimension dimension) {
 		this.dimensione = dimensione;
 		posizione = cella.getPosizione();
 		setLayout(new BorderLayout());
 		setBackground(Color.WHITE);
-		dimension = Toolkit.getDefaultToolkit().getScreenSize();
-		setPreferredSize(new Dimension((dimension.width-850) / dimensione, (dimension.height-250) / dimensione));
-		fontCella = new Font("Ariel", Font.ITALIC, ((dimension.width-dimension.height)-300) / dimensione);
-		fontOR = new Font("Ariel", Font.BOLD, (dimension.height-650) / dimensione);
+		if (dimensione >= 6)
+			fattoreScala = 18 / dimensione;
+		else
+			fattoreScala = 10 / dimensione;
+		setPreferredSize(new Dimension(dimension.width / dimensione, dimension.height / dimensione));
+		fontCella = new Font("Ariel", Font.ITALIC,
+				(dimension.width + dimension.height) / (dimensione * fattoreScala * 2));
+		fontOR = new Font("Ariel", Font.BOLD, (dimension.width + dimension.height) / (dimensione * fattoreScala * 4));
 		label = new JLabel(" ");
 		label.setFont(fontOR);
 		add(label, BorderLayout.BEFORE_FIRST_LINE);
@@ -60,40 +63,35 @@ public class JPanelCella extends JButton {
 	 * @param lista
 	 */
 	public void bordi(Insieme<Cella> lista) {
-		int fattore = 0;
-		if (dimensione >= 6)
-			fattore = 18 / dimensione;
-		else
-			fattore = 10 / dimensione;
-		int top = fattore + 1;
-		int left = fattore + 1;
-		int bottom = fattore + 1;
-		int right = fattore + 1;
+		int top = fattoreScala + 1;
+		int left = fattoreScala + 1;
+		int bottom = fattoreScala + 1;
+		int right = fattoreScala + 1;
 		if (posizione.getRiga() == 0) {
-			top = fattore * 2;
+			top = fattoreScala * 2;
 		} else if (posizione.getRiga() == dimensione - 1) {
-			bottom = fattore * 2;
+			bottom = fattoreScala * 2;
 		}
 		if (posizione.getColonna() == 0) {
-			left = fattore * 2;
+			left = fattoreScala * 2;
 		} else if (posizione.getColonna() == dimensione - 1) {
-			right = fattore * 2;
+			right = fattoreScala * 2;
 		}
 		Iterator<Cella> it = lista.iterator();
 		while (it.hasNext()) {
 			Posizione p = it.next().getPosizione();
 			if (!p.equals(posizione)) {
 				if (p.getRiga() > posizione.getRiga() && p.getColonna() == posizione.getColonna()) {
-					bottom = fattore / 2;
+					bottom = fattoreScala / 2;
 				}
 				if (p.getColonna() > posizione.getColonna() && p.getRiga() == posizione.getRiga()) {
-					right = fattore / 2;
+					right = fattoreScala / 2;
 				}
 				if (p.getRiga() < posizione.getRiga() && p.getColonna() == posizione.getColonna()) {
-					top = fattore / 2;
+					top = fattoreScala / 2;
 				}
 				if (p.getColonna() < posizione.getColonna() && p.getRiga() == posizione.getRiga()) {
-					left = fattore / 2;
+					left = fattoreScala / 2;
 				}
 			}
 		}
@@ -101,7 +99,7 @@ public class JPanelCella extends JButton {
 	}
 
 	public void assegnaOR(String operatore) {
-		label.setText(" "+operatore);
+		label.setText(" " + operatore);
 	}
 
 	public Posizione getPosizione() {

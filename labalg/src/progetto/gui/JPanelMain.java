@@ -1,6 +1,7 @@
 package progetto.gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
@@ -46,11 +47,16 @@ public class JPanelMain extends JPanel {
 	private GridBagConstraints gbc = null;
 	private HashMap<Posizione, JPanelCella> hashMapJCella = null;
 	private Mediator mediator = null;
+	private Dimension dimension;
 	private boolean mappaSelezionata = false;
 
-	public JPanelMain(Mediator mediator) {
+	public JPanelMain(Mediator mediator, Dimension dimension) {
 		this.mediator = mediator;
 		setName("jPanelMain");
+		this.dimension = new Dimension(dimension);
+		int width = dimension.width - (dimension.width / 100) * 2;
+		int height = dimension.height - (dimension.height / 12) * 2;
+		this.dimension.setSize(width, height);
 		creaJPanelIntro();
 	}
 
@@ -110,7 +116,7 @@ public class JPanelMain extends JPanel {
 			flag = false;
 			Insieme<Cella> lista = blocco.getListaCelle();
 			for (int i = 0; i < lista.dimensione(); i++) {
-				JPanelCella jc = new JPanelCella(lista.getElemento(i), dimensione);
+				JPanelCella jc = new JPanelCella(lista.getElemento(i), dimensione, dimension);
 				jc.setName(jc.getPosizione().toString());
 				mediator.manageEvent(new ActionEvent(jc, Counter.generateID(), null));
 				if (!flag) {

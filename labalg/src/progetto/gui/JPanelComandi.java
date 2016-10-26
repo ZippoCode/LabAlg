@@ -1,6 +1,7 @@
 package progetto.gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 
 import javax.swing.BorderFactory;
@@ -36,7 +37,7 @@ public class JPanelComandi extends JPanel {
 	private JButton restoreState = null;
 	private JButton help = null;
 
-	public JPanelComandi(Mediator mediator) {
+	public JPanelComandi(Mediator mediator, Dimension dimension) {
 		setBackground(Color.decode("#01579B"));
 		setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 		setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
