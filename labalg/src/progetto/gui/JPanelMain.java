@@ -54,9 +54,10 @@ public class JPanelMain extends JPanel {
 		this.mediator = mediator;
 		setName("jPanelMain");
 		this.dimension = new Dimension(dimension);
-		int width = dimension.width - (dimension.width / 100) * 2;
-		int height = dimension.height - (dimension.height / 12) * 2;
+		int width = dimension.width - (dimension.width * 10) / 100;
+		int height = dimension.height - (dimension.height * 2) / 10;
 		this.dimension.setSize(width, height);
+		setPreferredSize(dimension);
 		creaJPanelIntro();
 	}
 

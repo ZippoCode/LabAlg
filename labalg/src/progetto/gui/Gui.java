@@ -35,8 +35,8 @@ public class Gui extends JFrame {
 	public void avviaGui() {
 		setTitle("Kenken");
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-		dimWidth = dimension.width / 2 - dimension.width / 23;
-		dimHeigth = dimension.height - dimension.height / 7;
+		dimWidth = dimension.width / 2;
+		dimHeigth = (dimension.height * 9) / 10;
 		dimension.setSize(dimWidth, dimHeigth);
 		setJMenuBar(new JPanelMenu(mediator, dimension));
 		jpg = new JPanelMain(mediator, dimension);
