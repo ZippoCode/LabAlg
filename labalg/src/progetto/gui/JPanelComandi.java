@@ -2,6 +2,7 @@ package progetto.gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 
 import javax.swing.BorderFactory;
@@ -36,8 +37,10 @@ public class JPanelComandi extends JPanel {
 	private JButton saveState = null;
 	private JButton restoreState = null;
 	private JButton help = null;
+	private Dimension dim = null;
 
 	public JPanelComandi(Mediator mediator, Dimension dimension) {
+		dim = new Dimension(dimension);
 		setBackground(Color.decode("#01579B"));
 		setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 		setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -64,6 +67,7 @@ public class JPanelComandi extends JPanel {
 	public void sistemaBottone(JButton bottone, String name, String testo, Mediator mediator) {
 		bottone = new JButton(testo);
 		bottone.setName(name);
+		bottone.setFont(new Font("Ariel", Font.BOLD, dim.width / 50));
 		mediator.manageEvent(new ActionEvent(bottone, Counter.generateID(), null));
 		add(bottone);
 	}

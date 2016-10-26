@@ -111,7 +111,7 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 	}
 
 	private class StartState extends MediatorState {
-		private int COUNTER = 57;
+		private int COUNTER = 60;
 
 		@Override
 		public void entryState() {

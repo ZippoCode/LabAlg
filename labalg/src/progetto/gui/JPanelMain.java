@@ -48,14 +48,15 @@ public class JPanelMain extends JPanel {
 	private HashMap<Posizione, JPanelCella> hashMapJCella = null;
 	private Mediator mediator = null;
 	private Dimension dimension;
+	private int width, height;
 	private boolean mappaSelezionata = false;
 
 	public JPanelMain(Mediator mediator, Dimension dimension) {
 		this.mediator = mediator;
 		setName("jPanelMain");
 		this.dimension = new Dimension(dimension);
-		int width = dimension.width - (dimension.width * 10) / 100;
-		int height = dimension.height - (dimension.height * 2) / 10;
+		width = dimension.width - (dimension.width * 10) / 100;
+		height = dimension.height - (dimension.height * 2) / 10;
 		this.dimension.setSize(width, height);
 		setPreferredSize(dimension);
 		creaJPanelIntro();
@@ -82,7 +83,7 @@ public class JPanelMain extends JPanel {
 		bottone.setName(nome);
 		bottone.setEnabled(true);
 		bottone.setBackground(Color.WHITE);
-		bottone.setFont(new Font("Ariel", Font.CENTER_BASELINE, 15));
+		bottone.setFont(new Font("Ariel", Font.CENTER_BASELINE, width / 30));
 		add(bottone);
 		mediator.manageEvent(new ActionEvent(bottone, Counter.generateID(), null));
 	}

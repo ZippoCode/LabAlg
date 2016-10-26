@@ -9,7 +9,7 @@ import java.util.Random;
  */
 public class GetStringa {
 
-	public static final int numTre = 5, numQuattro = 2, numCinque = 5, numSei = 4, numSette = 1, numOtto = 1,
+	public static final int numTre = 5, numQuattro = 2, numCinque = 5, numSei = 4, numSette = 3, numOtto = 2,
 			numNove = 2;
 	private static int val = 0;
 	private static Random random = new Random();

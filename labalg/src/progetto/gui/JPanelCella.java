@@ -44,11 +44,10 @@ public class JPanelCella extends JButton {
 		setPreferredSize(new Dimension(dimension.width / dimensione, dimension.height / dimensione));
 		fontCella = new Font("Ariel", Font.ITALIC,
 				(dimension.width + dimension.height) / (dimensione * fattoreScala * 2));
-		fontOR = new Font("Ariel", Font.BOLD, (dimension.width + dimension.height) / (dimensione * fattoreScala * 4));
+		fontOR = new Font("Ariel", Font.CENTER_BASELINE, (dimension.width + dimension.height) / (dimensione * fattoreScala * 5));
 		label = new JLabel(" ");
 		label.setFont(fontOR);
 		add(label, BorderLayout.BEFORE_FIRST_LINE);
-
 		setName(posizione.toString());
 		setForeground(Color.BLACK);
 		setFont(fontCella);
