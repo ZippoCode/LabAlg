@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.util.Iterator;
 
 import javax.swing.BorderFactory;
@@ -28,6 +29,7 @@ public class JPanelCella extends JButton {
 	private Font fontCella = null, fontOR = null;
 	private JLabel label = null;
 	private Posizione posizione = null;
+	private Dimension dimension = null;
 	private int dimensione = 0;
 	private boolean modificabile = true;
 
@@ -36,9 +38,10 @@ public class JPanelCella extends JButton {
 		posizione = cella.getPosizione();
 		setLayout(new BorderLayout());
 		setBackground(Color.WHITE);
-		setPreferredSize(new Dimension(550 / dimensione, 550 / dimensione));
-		fontCella = new Font(null, Font.PLAIN, 321 / dimensione);
-		fontOR = new Font("Ariel", Font.CENTER_BASELINE, 125 / dimensione);
+		dimension = Toolkit.getDefaultToolkit().getScreenSize();
+		setPreferredSize(new Dimension((dimension.width-850) / dimensione, (dimension.height-250) / dimensione));
+		fontCella = new Font("Ariel", Font.ITALIC, ((dimension.width-dimension.height)-300) / dimensione);
+		fontOR = new Font("Ariel", Font.BOLD, (dimension.height-650) / dimensione);
 		label = new JLabel(" ");
 		label.setFont(fontOR);
 		add(label, BorderLayout.BEFORE_FIRST_LINE);
@@ -97,8 +100,8 @@ public class JPanelCella extends JButton {
 		setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, Color.BLACK));
 	}
 
-	public void assegnaOR(String linea) {
-		label.setText(" " + linea);
+	public void assegnaOR(String operatore) {
+		label.setText(" "+operatore);
 	}
 
 	public Posizione getPosizione() {

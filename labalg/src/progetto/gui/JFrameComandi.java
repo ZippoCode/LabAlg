@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JButton;
@@ -18,6 +19,7 @@ public class JFrameComandi extends JFrame {
 
 	private static final long serialVersionUID = 1440918253326450869L;
 	private JLabel testo = null;
+	private Dimension dimensione = null;
 	private JButton ok;
 	private String text = "<html>CLICCARE SU GIOCA E SELEZIONARE LA DIMENSIONE DELLA GRIGLIA,"
 			+ "<br>PER SCRIVERE UN NUMERO E' SUFFICIENTIE CLICCARE SULLA POSIZIONE"
@@ -40,9 +42,10 @@ public class JFrameComandi extends JFrame {
 		mediator.manageEvent(new ActionEvent(ok, Counter.generateID(), null));
 		pack();
 		setResizable(false);
-		setSize(new Dimension(500, 230));
+		dimensione = Toolkit.getDefaultToolkit().getScreenSize();
+		setSize(new Dimension(dimensione.width / 3, dimensione.height / 3));
 		setAlwaysOnTop(true);
-		setLocation(500, 200);
+		setLocationRelativeTo(null);
 		setVisible(false);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 	}
@@ -50,6 +53,6 @@ public class JFrameComandi extends JFrame {
 	private void impostaLabel(JLabel label, String testo) {
 		label = new JLabel(testo);
 		label.setFont(new Font("Ariel", Font.ITALIC, 12));
-		contentPanel.add(label, BorderLayout.LINE_START);
+		contentPanel.add(label, BorderLayout.CENTER);
 	}
 }

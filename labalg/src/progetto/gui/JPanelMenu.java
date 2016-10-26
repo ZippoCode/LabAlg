@@ -1,7 +1,9 @@
 package progetto.gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 
 import javax.swing.BorderFactory;
@@ -37,7 +39,8 @@ public class JPanelMenu extends JMenuBar {
 	private JMenuItem comandi = null;
 
 	public JPanelMenu(Mediator mediator) {
-		Font f = new Font("Ariel", Font.BOLD, 15);
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		Font f = new Font("Ariel", Font.BOLD, dim.height/50);
 		setBackground(Color.decode("#01579B"));
 		setBorder(BorderFactory.createLineBorder(Color.BLUE));
 		nuovo = new JMenu("Nuova partita");

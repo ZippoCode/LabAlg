@@ -12,7 +12,7 @@ import progetto.utility.Posizione;
 /**
  * 
  * @author Salvatore
- * @version 1.0.2
+ * @version 1.1
  * 
  *          PRODUCT Questa classe gestisce la griglia e l'insieme dei blocchi.
  */

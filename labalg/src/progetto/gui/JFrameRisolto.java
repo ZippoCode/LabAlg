@@ -50,7 +50,7 @@ public class JFrameRisolto extends JFrame {
 		setResizable(false);
 		setSize(new Dimension(400, 100));
 		setAlwaysOnTop(true);
-		setLocation(500, 200);
+		setLocationRelativeTo(null);
 		setVisible(false);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 	}

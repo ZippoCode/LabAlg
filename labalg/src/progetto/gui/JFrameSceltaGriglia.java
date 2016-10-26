@@ -50,9 +50,9 @@ public class JFrameSceltaGriglia extends JFrame {
 		add(pannello);
 		pack();
 		setVisible(false);
-		setLocation(600, 50);
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setSize(new Dimension(400, 400));
+		setLocationRelativeTo(null);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 	}
 
 	private JScrollPane creaPannello(int numero, int dimensione) {

@@ -47,7 +47,7 @@ public class JFrameSceltaNumero extends JFrame {
 		setResizable(false);
 		setAlwaysOnTop(true);
 		setSize(300, 100);
-		setLocation(600, 300);
+		setLocationRelativeTo(null);
 		setVisible(false);
 	}
 

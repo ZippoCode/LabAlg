@@ -106,7 +106,7 @@ public class JPanelMain extends JPanel {
 		boolean flag = false;
 		hashMapJCella = new HashMap<Posizione, JPanelCella>();
 		for (Blocco blocco : listaBlocchi) {
-			String linea = blocco.getOperatore() + " " + String.valueOf(blocco.getRisultato());
+			String linea = blocco.getOperatore() + String.valueOf(blocco.getRisultato());
 			flag = false;
 			Insieme<Cella> lista = blocco.getListaCelle();
 			for (int i = 0; i < lista.dimensione(); i++) {

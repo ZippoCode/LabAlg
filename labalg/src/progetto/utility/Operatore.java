@@ -56,7 +56,7 @@ public enum Operatore {
 		case DIVISIONE:
 			return "÷";
 		case NULLO:
-			return " ";
+			return "";
 		default:
 			throw new RuntimeException("Operatore non presente");
 		}

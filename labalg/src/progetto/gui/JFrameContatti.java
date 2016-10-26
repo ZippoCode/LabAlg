@@ -1,5 +1,6 @@
 package progetto.gui;
 
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 
 import javax.swing.Box;
@@ -22,7 +23,7 @@ public class JFrameContatti extends JFrame {
 	private String textName = "Studente: Salvatore Prochilo";
 	private String textMatricola = "Matricola: 150097";
 	private String textEmail = "E-Mail: prochilo.salvatore@gmail.com";
-	private int posX = 600, posY = 200 , vStruct = 5;
+	private int vStruct = 5;
 	private JPanel contentPanel;
 
 	public JFrameContatti(Mediator mediator) {
@@ -42,7 +43,7 @@ public class JFrameContatti extends JFrame {
 		add(contentPanel);
 		pack();
 		setTitle("Contatti");
-		setLocation(posX, posY);
+		setLocationRelativeTo(null);
 		setResizable(false);
 		setAlwaysOnTop(true);
 		setVisible(false);
@@ -51,6 +52,7 @@ public class JFrameContatti extends JFrame {
 
 	private void impostaLabel(JLabel label, String testo) {
 		label = new JLabel(testo);
+		label.setFont(new Font("Ariel", Font.BOLD, 18));
 		label.setAlignmentX(CENTER_ALIGNMENT);
 		contentPanel.add(label);
 		contentPanel.add(Box.createVerticalStrut(vStruct));
