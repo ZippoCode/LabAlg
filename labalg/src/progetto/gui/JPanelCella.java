@@ -34,6 +34,8 @@ public class JPanelCella extends JButton {
 
 	public JPanelCella(Cella cella, int dimensione, Dimension dimension) {
 		this.dimensione = dimensione;
+		int width = dimension.width;
+		int height = dimension.height;
 		posizione = cella.getPosizione();
 		setLayout(new BorderLayout());
 		setBackground(Color.WHITE);
@@ -41,10 +43,9 @@ public class JPanelCella extends JButton {
 			fattoreScala = 18 / dimensione;
 		else
 			fattoreScala = 10 / dimensione;
-		setPreferredSize(new Dimension(dimension.width / dimensione, dimension.height / dimensione));
-		fontCella = new Font("Ariel", Font.ITALIC,
-				(dimension.width + dimension.height) / (dimensione * fattoreScala * 2));
-		fontOR = new Font("Ariel", Font.CENTER_BASELINE, (dimension.width + dimension.height) / (dimensione * fattoreScala * 5));
+		setPreferredSize(new Dimension(width / dimensione, height / dimensione));
+		fontCella = new Font("Ariel", Font.ITALIC, width / dimensione - height / dimensione + fattoreScala * 15);
+		fontOR = new Font("Ariel", Font.CENTER_BASELINE, width / dimensione - height / dimensione + fattoreScala * 3);
 		label = new JLabel(" ");
 		label.setFont(fontOR);
 		add(label, BorderLayout.BEFORE_FIRST_LINE);
@@ -94,7 +95,7 @@ public class JPanelCella extends JButton {
 				}
 			}
 		}
-		setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, Color.BLACK));
+		setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, Color.BLACK.darker()));
 	}
 
 	public void assegnaOR(String operatore) {

@@ -6,8 +6,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
@@ -92,9 +92,10 @@ public class JPanelMain extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		if (!mappaSelezionata) {
-			BufferedImage background;
+			Image background;
 			try {
 				background = ImageIO.read(getClass().getClassLoader().getResource("info/background.jpg"));
+				background = background.getScaledInstance((width*3)/2, (height*3)/2, Image.SCALE_SMOOTH);
 				g.drawImage(background, 0, 0, null);
 			} catch (IOException e) {
 				e.printStackTrace();
