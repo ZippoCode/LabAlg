@@ -1,16 +1,16 @@
 package progetto.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 import progetto.mediator.Mediator;
 import progetto.utility.Counter;
@@ -18,41 +18,46 @@ import progetto.utility.Counter;
 public class JFrameComandi extends JFrame {
 
 	private static final long serialVersionUID = 1440918253326450869L;
-	private JLabel testo = null;
 	private Dimension dimensione = null;
+	private JTextArea txa = null;
 	private JButton ok;
-	private String text = "<html>CLICCARE SU GIOCA E SELEZIONARE LA DIMENSIONE DELLA GRIGLIA,"
-			+ "<br>PER SCRIVERE UN NUMERO E' SUFFICIENTIE CLICCARE SULLA POSIZIONE"
-			+ "<br>E DIGITARE DA TASTIERA IL NUMERO SCELTO.<br> I BOTTONI<br>RISOLVI : Visualizza la soluzione"
-			+ "<br>RESET : Elimina i numeri scritti" + "<br> « e »  : Permettono di navigare sui numeri scritti"
-			+ "<br>CHECK : Informa se i numeri scritti sono corretto"
-			+ "<br>SAVE e RESTORE : Permetto di salvare e ripristinare lo stato"
-			+ "<br>AIUTO : Visualizza un numero in una posizione casuale<br></html>";
-	private JPanel contentPanel;
+	private String text = "CLICCARE SU GIOCA E SELEZIONARE LA DIMENSIONE DELLA GRIGLIAPER SCRIVERE UN NUMERO E' SUFFICIENTIE CLICCARE SULLA POSIZIONE E DIGITARE DA TASTIERA IL NUMERO SCELTO. I BOTTONI "
+			+ "\nRISOLVI : Visualizza la soluzione " + "\nRESET : Elimina i numeri scritti "
+			+ "\n<< e >>  : Permettono di navigare sui numeri scritti "
+			+ "\nCONTROLLA : Informa se i numeri scritti sono corretto "
+			+ "\nSAVE e RESTORE : Permetto di salvare e ripristinare lo stato "
+			+ "\nAIUTO : Visualizza un numero in una posizione casuale";
+	private JPanel panelText, panelButton;
 
 	public JFrameComandi(Mediator mediator) {
-		contentPanel = new JPanel();
-		setContentPane(contentPanel);
-		setLayout(new FlowLayout());
-		setTitle("Contatti");
-		impostaLabel(testo, text);
-		ok = new JButton("OK");
+		panelText = new JPanel();
+		panelText.setLayout(new BorderLayout());
+		panelText.setBackground(Color.white);
+		panelButton = new JPanel();
+		panelButton.setBackground(Color.white);
+		dimensione = Toolkit.getDefaultToolkit().getScreenSize();
+		setTitle("Comandi");
+		txa = new JTextArea();
+		txa.setEditable(false);
+		txa.setText(text);
+		txa.setFont(new Font("Ariel", Font.PLAIN, dimensione.height / 50));
+		txa.setLineWrap(true);
+		txa.setWrapStyleWord(true);
+		ok = new JButton("ESCI");
 		ok.setName("okComandi");
-		contentPanel.add(ok, BorderLayout.LINE_END);
+		ok.setFont(new Font("Ariel", Font.PLAIN, dimensione.height / 50));
+		panelText.add(txa, BorderLayout.CENTER);
+		panelButton.add(ok, BorderLayout.CENTER);
 		mediator.manageEvent(new ActionEvent(ok, Counter.generateID(), null));
 		pack();
 		setResizable(false);
-		dimensione = Toolkit.getDefaultToolkit().getScreenSize();
 		setSize(new Dimension(dimensione.width / 3, dimensione.height / 3));
+		add(panelText, BorderLayout.CENTER);
+		add(panelButton, BorderLayout.SOUTH);
 		setAlwaysOnTop(true);
 		setLocationRelativeTo(null);
 		setVisible(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
 
-	private void impostaLabel(JLabel label, String testo) {
-		label = new JLabel(testo);
-		label.setFont(new Font("Ariel", Font.ITALIC, 12));
-		contentPanel.add(label, BorderLayout.CENTER);
-	}
 }

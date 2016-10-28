@@ -25,13 +25,16 @@ public class JFrameUscita extends JFrame {
 		setContentPane(contentPanel);
 		setTitle("Esci");
 		setLayout(new FlowLayout());
+		
 		testo = new Label("Confermi di voler uscire dall'applicazione?\n PERDERAI TUTTI I PROGRESSI.");
 		siExit = new JButton("SI");
 		siExit.setName("siExit");
 		mediator.manageEvent(new ActionEvent(siExit, Counter.generateID(), null));
+		
 		noExit = new JButton("NO");
 		noExit.setName("noExit");
 		mediator.manageEvent(new ActionEvent(noExit, Counter.generateID(), null));
+		
 		contentPanel.add(testo);
 		contentPanel.add(siExit);
 		contentPanel.add(noExit);
@@ -40,6 +43,7 @@ public class JFrameUscita extends JFrame {
 		setResizable(false);
 		setSize(new Dimension(450, 100));
 		setAlwaysOnTop(true);
+		setLocationRelativeTo(null);
 		setLocation(500, 200);
 		setVisible(false);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
