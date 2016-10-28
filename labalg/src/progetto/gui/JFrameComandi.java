@@ -40,7 +40,7 @@ public class JFrameComandi extends JFrame {
 		txa = new JTextArea();
 		txa.setEditable(false);
 		txa.setText(text);
-		txa.setFont(new Font("Ariel", Font.PLAIN, dimensione.height / 50));
+		txa.setFont(new Font("Ariel", Font.PLAIN, dimensione.height / 55));
 		txa.setLineWrap(true);
 		txa.setWrapStyleWord(true);
 		ok = new JButton("ESCI");

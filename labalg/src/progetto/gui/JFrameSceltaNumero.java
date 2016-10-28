@@ -3,7 +3,6 @@ package progetto.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -25,15 +24,17 @@ import progetto.utility.Counter;
 public class JFrameSceltaNumero extends JFrame {
 	private static final long serialVersionUID = -6076695279750416625L;
 	private JRadioButton tre, quattro, cinque, sei, sette, otto, nove;
-	private JPanel pannello = null;
+	private JPanel pannelloBG, pannelloButton;
 	private ButtonGroup bg = null;
 	private JButton conferma = null;
 	private JButton annulla = null;
 
 	public JFrameSceltaNumero(Mediator mediator) {
 		setName("jsceltaframe");
-		pannello = new JPanel();
-		pannello.setLayout(new FlowLayout());
+		pannelloBG = new JPanel();
+		pannelloButton = new JPanel();
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+
 		bg = new ButtonGroup();
 		settaggioJRB(tre, "3", mediator);
 		settaggioJRB(quattro, "4", mediator);
@@ -45,15 +46,17 @@ public class JFrameSceltaNumero extends JFrame {
 		settaggioJB(conferma, "conferma", mediator);
 		settaggioJB(annulla, "annulla", mediator);
 
-		add(pannello);
-		pack();
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		pannello.setBackground(Color.WHITE);
+		pannelloBG.setBackground(Color.WHITE);
+		pannelloButton.setBackground(Color.WHITE);
+		add(pannelloBG, BorderLayout.CENTER);
+		add(pannelloButton, BorderLayout.SOUTH);
+		
 		setTitle("Scegli dimensione");
 		setResizable(false);
 		setAlwaysOnTop(true);
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		setSize(dim.width / 5, dim.height / 6);
+		pack();
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setSize(dim.width / 4, dim.height / 6);
 		setLocationRelativeTo(null);
 		setVisible(false);
 	}
@@ -65,7 +68,7 @@ public class JFrameSceltaNumero extends JFrame {
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		jrb.setFont(new Font("Ariel", Font.BOLD, dim.width / 75));
 		bg.add(jrb);
-		pannello.add(jrb);
+		pannelloBG.add(jrb);
 		mediator.manageEvent(new ActionEvent(jrb, Counter.generateID(), null));
 	}
 
@@ -76,7 +79,7 @@ public class JFrameSceltaNumero extends JFrame {
 		bottone.setBackground(Color.WHITE);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		bottone.setFont(new Font("Ariel", Font.BOLD, dim.width / 70));
-		pannello.add(bottone, BorderLayout.SOUTH);
+		pannelloButton.add(bottone, BorderLayout.CENTER);
 		mediator.manageEvent(new ActionEvent(bottone, Counter.generateID(), null));
 	}
 
