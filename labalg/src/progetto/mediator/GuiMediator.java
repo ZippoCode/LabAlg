@@ -106,6 +106,8 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 			} else if (nomeEvento.equals("contatti") || nomeEvento.equals("introContatti")) {
 				flag = true;
 				transition(JFRAME);
+			} else if (grigliaPresente) {
+				transition(GIOCA);
 			}
 		}
 	}
@@ -326,9 +328,9 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 
 		@Override
 		public void entryState() {
-			if (random)
+			if (random && !jFrameSceltaNumero.isVisible())
 				jFrameSceltaNumero.setVisible(true);
-			else
+			else if (!jFrameSceltaGriglia.isVisible())
 				jFrameSceltaGriglia.setVisible(true);
 		}
 
@@ -370,9 +372,12 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 				dimMappa = Integer.parseInt(
 						grigliaSelezionata.substring(grigliaSelezionata.length() - 3, grigliaSelezionata.length() - 2));
 				transition(BUILDER);
-			} else {
-				super.manageEvent(event);
-			}
+			} else
+				try {
+					Integer.parseInt(name);
+				} catch (Exception e) {
+					super.manageEvent(event);
+				}
 		}
 	}
 
@@ -403,6 +408,7 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 			restoreState.setEnabled(false);
 			help.setEnabled(true);
 			grigliaPresente = true;
+			jPanelMain.changeFlag();
 		}
 
 		@Override
@@ -418,7 +424,9 @@ public class GuiMediator extends FSM implements Mediator, Runnable {
 
 		@Override
 		public void entryState() {
-			jPanelMain.changeFlag();
+			risolvi.setEnabled(true);
+			reset.setEnabled(false);
+			help.setEnabled(true);
 		}
 
 		@Override

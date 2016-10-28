@@ -81,7 +81,9 @@ public class Mappa implements MappaIF {
 	public void write(Integer scelta, Posizione puntoDiScelta) {
 		griglia.scriviNumero(puntoDiScelta, scelta);
 		insieme.scriviBlocco(puntoDiScelta, scelta);
-		// posizioniRandom.addLast(puntoDiScelta);
+		if (soluzione != null && soluzione.getValore(puntoDiScelta) == scelta) {
+			posizioniRandom.addLast(puntoDiScelta);
+		}
 		numeriScritti++;
 	}
 
@@ -89,7 +91,7 @@ public class Mappa implements MappaIF {
 	public void delete(Integer scelta, Posizione puntoDiScelta) {
 		griglia.cancellaNumero(puntoDiScelta);
 		insieme.cancellaBlocco(puntoDiScelta);
-		// posizioniRandom.remove(puntoDiScelta);
+		posizioniRandom.remove(puntoDiScelta);
 		numeriScritti--;
 	}
 

@@ -47,7 +47,7 @@ public class JFrameComandi extends JFrame {
 		setAlwaysOnTop(true);
 		setLocationRelativeTo(null);
 		setVisible(false);
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
 
 	private void impostaLabel(JLabel label, String testo) {

@@ -42,7 +42,7 @@ public class JFrameSceltaNumero extends JFrame {
 		
 		add(pannello);
 		pack();
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setTitle("Scegli dimensione");
 		setResizable(false);
 		setAlwaysOnTop(true);

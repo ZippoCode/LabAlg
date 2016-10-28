@@ -56,7 +56,7 @@ public class JFrameSceltaGriglia extends JFrame {
 		Dimension dimScreen = Toolkit.getDefaultToolkit().getScreenSize();
 		setSize(new Dimension(dimScreen.width / 3, dimScreen.height / 2));
 		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 
 	private JScrollPane creaPannello(int numero, int dimensione) {

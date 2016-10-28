@@ -102,4 +102,19 @@ public class InsiemeLL<T> implements Insieme<T> {
 		return lista;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder(dimensione());
+		sb.append("[");
+		Iterator<T> it = lista.iterator();
+		while (it.hasNext()) {
+			T e = it.next();
+			sb.append(e);
+			if (it.hasNext()) {
+				sb.append(" - ");
+			}
+		}
+		sb.append("]");
+		return sb.toString();
+	}
 }
