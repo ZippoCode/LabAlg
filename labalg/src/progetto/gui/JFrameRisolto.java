@@ -54,7 +54,7 @@ public class JFrameRisolto extends JFrame {
 		contentPanel.setBackground(Color.WHITE);
 		pack();
 		setResizable(false);
-		setSize(new Dimension(dim.width / 5, dim.height / 4));
+		setSize(new Dimension(dim.width / 3, dim.height / 5));
 		setAlwaysOnTop(true);
 		setLocationRelativeTo(null);
 		setVisible(false);
